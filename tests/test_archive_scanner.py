@@ -2,13 +2,9 @@
 Tests for Archive Scanner module.
 """
 
-import os
 import tempfile
 from pathlib import Path
 import pytest
-
-import sys
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from cognitive_tribunal.modules.archive_scanner import ArchiveScanner
 
@@ -129,7 +125,3 @@ def test_duplicate_detection_within_single_location():
         assert dedup_stats['total_files'] == 3
         assert dedup_stats['duplicate_groups'] == 1
         assert dedup_stats['duplicate_files'] == 1  # 2 files - 1 = 1 duplicate
-
-
-if __name__ == '__main__':
-    pytest.main([__file__, '-v'])
