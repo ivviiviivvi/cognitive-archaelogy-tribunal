@@ -1,0 +1,53 @@
+# Example Configuration for Cognitive Archaeology Tribunal
+
+# GitHub Configuration
+github:
+  token: "${GITHUB_TOKEN}"  # Or set directly (not recommended for security)
+  
+# Archive Scanning Configuration
+archives:
+  locations:
+    - "/path/to/iCloud/Drive"
+    - "/path/to/Dropbox"
+    - "/path/to/local/archives"
+  exclude_patterns:
+    - "__pycache__"
+    - ".git"
+    - "node_modules"
+    - "*.tmp"
+  max_depth: 10  # Maximum directory depth to scan
+
+# AI Conversations Configuration
+ai_conversations:
+  chatgpt_export_path: "/path/to/chatgpt/export"
+  # Can also specify multiple sources
+  sources:
+    - type: "chatgpt"
+      path: "/path/to/chatgpt/conversations"
+    - type: "generic"
+      path: "/path/to/other/ai/conversations"
+
+# Personal Repositories Configuration
+personal_repos:
+  username: "your-github-username"  # Leave empty to use authenticated user
+  analyze_forks: true
+  track_modifications: true
+
+# Organization Repositories Configuration
+org_repos:
+  organizations:
+    - "org-name-1"
+    - "org-name-2"
+  include_archived: true
+
+# Output Configuration
+output:
+  directory: "./output"
+  formats:
+    - "json"
+    - "text"
+  generate:
+    inventory: true
+    knowledge_graph: true
+    triage_report: true
+    migration_plan: true
