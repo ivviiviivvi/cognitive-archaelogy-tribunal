@@ -81,6 +81,7 @@ class ArchiveScanner:
         
         print(f"Scanning directory: {root}")
         self.scanned_files = []
+        self.deduplicator = Deduplicator()
         self.stats = {
             'total_files': 0,
             'total_size': 0,
