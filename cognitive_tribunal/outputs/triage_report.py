@@ -25,6 +25,7 @@ class TriageReportGenerator:
             'ai_conversations': {},
             'personal_repos': {},
             'org_repos': {},
+            'web_bookmarks': {},
             'priorities': {
                 'high': [],
                 'medium': [],
@@ -204,6 +205,35 @@ class TriageReportGenerator:
             })
         
         self.report['org_repos'] = triage
+
+    def add_web_bookmark_triage(self, bookmark_data: Dict):
+        """Add web bookmark triage information."""
+        if not bookmark_data:
+            return
+
+        stats = bookmark_data.get('stats', {})
+        total_bookmarks = stats.get('total_bookmarks', 0)
+
+        triage = {
+            'total_bookmarks': total_bookmarks,
+            'recommendations': [],
+        }
+
+        if total_bookmarks > 200:
+            triage['recommendations'].append({
+                'priority': 'low',
+                'action': 'Review and organize bookmarks',
+                'impact': f'Improve usability of {total_bookmarks} bookmarks',
+            })
+
+            self.report['priorities']['low'].append({
+                'category': 'web_bookmarks',
+                'item': 'Large bookmark collection',
+                'action': 'Organize bookmarks into folders or tags',
+                'impact': f'{total_bookmarks} bookmarks to organize',
+            })
+
+        self.report['web_bookmarks'] = triage
     
     def generate(self) -> Dict:
         """

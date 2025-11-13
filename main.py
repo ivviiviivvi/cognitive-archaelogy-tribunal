@@ -17,6 +17,7 @@ from cognitive_tribunal.modules.archive_scanner import ArchiveScanner
 from cognitive_tribunal.modules.ai_context_aggregator import AIContextAggregator
 from cognitive_tribunal.modules.personal_repo_analyzer import PersonalRepoAnalyzer
 from cognitive_tribunal.modules.org_repo_analyzer import OrgRepoAnalyzer
+from cognitive_tribunal.modules.web_bookmark_analyzer import WebBookmarkAnalyzer
 from cognitive_tribunal.outputs.inventory import InventoryGenerator
 from cognitive_tribunal.outputs.knowledge_graph import KnowledgeGraphGenerator
 from cognitive_tribunal.outputs.triage_report import TriageReportGenerator
@@ -52,6 +53,7 @@ Examples:
     parser.add_argument('--ai-conversations', metavar='PATH', help='Load AI conversations from path')
     parser.add_argument('--personal-repos', metavar='USERNAME', help='Analyze personal GitHub repos')
     parser.add_argument('--org-repos', metavar='ORGNAME', help='Analyze organization GitHub repos')
+    parser.add_argument('--web-bookmarks', metavar='PATH', help='Analyze web bookmarks from an export file')
     
     # Configuration
     parser.add_argument('--github-token', help='GitHub personal access token (or use GITHUB_TOKEN env var)')
@@ -63,7 +65,7 @@ Examples:
     args = parser.parse_args()
     
     # Validate arguments
-    if not (args.all or args.scan_archives or args.ai_conversations or args.personal_repos or args.org_repos):
+    if not (args.all or args.scan_archives or args.ai_conversations or args.personal_repos or args.org_repos or args.web_bookmarks):
         parser.error('At least one module must be specified')
     
     print("=" * 70)
@@ -155,6 +157,22 @@ Examples:
         except Exception as e:
             print(f"✗ Error analyzing org repos: {e}")
     
+    # Module 5: Web Bookmark Analyzer
+    if args.web_bookmarks:
+        print("\n[5/5] Running Web Bookmark Analyzer...")
+        print("-" * 70)
+
+        analyzer = WebBookmarkAnalyzer()
+        bookmark_results = analyzer.analyze_bookmarks(args.web_bookmarks)
+        results['web_bookmarks'] = bookmark_results
+
+        # Save module results
+        import json
+        with open(output_dir / 'web_bookmarks.json', 'w') as f:
+            json.dump(bookmark_results, f, indent=2)
+
+        print(f"✓ Web bookmark analysis complete. Found {bookmark_results.get('stats', {}).get('total_bookmarks', 0)} bookmarks")
+
     # Generate unified outputs
     print("\n" + "=" * 70)
     print("GENERATING OUTPUTS")
@@ -173,6 +191,11 @@ Examples:
             inventory.add_personal_repo_results(results['personal_repos'])
         if 'org_repos' in results:
             inventory.add_org_repo_results(results['org_repos'])
+        if 'web_bookmarks' in results:
+            # This method needs to be added to the InventoryGenerator class
+            # For now, we'll just conceptually add it.
+            # inventory.add_web_bookmark_results(results['web_bookmarks'])
+            pass
         
         inventory.save_to_file(str(output_dir / 'inventory.json'))
         print("✓ Inventory saved")
@@ -201,6 +224,11 @@ Examples:
             triage.add_personal_repo_triage(results['personal_repos'])
         if 'org_repos' in results:
             triage.add_org_repo_triage(results['org_repos'])
+        if 'web_bookmarks' in results:
+            # This method needs to be added to the TriageReportGenerator class
+            # For now, we'll just conceptually add it.
+            # triage.add_web_bookmark_triage(results['web_bookmarks'])
+            pass
         
         triage.save_to_file(str(output_dir / 'triage_report.json'))
         

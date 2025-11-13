@@ -32,6 +32,11 @@ Comprehensive archaeological dig tool for multi-layer cognitive ecosystem. Audit
 - Health scoring and recommendations
 - Migration planning
 
+### 🌐 Module 5: Web Bookmark Analyzer
+- Parses bookmark export files (Netscape format)
+- Extracts URLs, titles, and creation dates
+- Provides statistics on bookmark collections
+
 ## Outputs
 
 The suite generates four comprehensive outputs:
@@ -87,6 +92,11 @@ python main.py --org-repos your-org --output-dir ./output
 python main.py --ai-conversations /path/to/chatgpt/export --output-dir ./output
 ```
 
+### Web Bookmarks Only
+```bash
+python main.py --web-bookmarks /path/to/bookmarks.html --output-dir ./output
+```
+
 ## Usage Examples
 
 ### Multiple Archive Locations
@@ -117,6 +127,7 @@ After running, you'll find these files in your output directory:
 - `ai_conversations.json` - AI conversation analysis
 - `personal_repos.json` - Personal repository analysis
 - `org_repos.json` - Organization repository analysis
+- `web_bookmarks.json` - Web bookmark analysis
 
 ## Configuration
 
@@ -181,7 +192,8 @@ cognitive_tribunal/
 │   ├── archive_scanner.py
 │   ├── ai_context_aggregator.py
 │   ├── personal_repo_analyzer.py
-│   └── org_repo_analyzer.py
+ │   ├── org_repo_analyzer.py
+ │   └── web_bookmark_analyzer.py
 ├── outputs/              # Output generators
 │   ├── inventory.py
 │   ├── knowledge_graph.py

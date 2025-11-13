@@ -102,6 +102,20 @@ A comprehensive Python suite for digital archaeology that audits and organizes s
 
 **Output:** Organization health report, dependency summary, and migration recommendations
 
+### ✅ Module 5: Web Bookmark Analyzer
+**Purpose:** Analyze web bookmarks from browser exports
+
+**Features:**
+- Parses Netscape Bookmark File Format (used by Chrome, Firefox, etc.)
+- Extracts URL, title, and add date for each bookmark
+- Provides statistics on the total number of bookmarks
+
+**Technical Implementation:**
+- `cognitive_tribunal/modules/web_bookmark_analyzer.py` - Main module
+- Uses regular expressions for parsing HTML-based bookmark files
+
+**Output:** JSON with bookmark list and statistics
+
 ### ✅ Unified Output System
 
 #### 1. Unified Inventory (inventory.json)
@@ -146,6 +160,7 @@ cognitive-archaelogy-tribunal/
 │   │   ├── ai_context_aggregator.py
 │   │   ├── personal_repo_analyzer.py
 │   │   └── org_repo_analyzer.py
+ │   │   └── web_bookmark_analyzer.py
 │   ├── outputs/                # Output generators
 │   │   ├── inventory.py
 │   │   ├── knowledge_graph.py
@@ -252,6 +267,7 @@ Generated files per run:
 7. `ai_conversations.json` - Conversation analysis (if applicable)
 8. `personal_repos.json` - Personal repo data (if applicable)
 9. `org_repos.json` - Org repo data (if applicable)
+ 10. `web_bookmarks.json` - Web bookmark data (if applicable)
 
 ## Code Quality
 

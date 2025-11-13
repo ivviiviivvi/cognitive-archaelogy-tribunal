@@ -25,8 +25,13 @@ class InventoryGenerator:
             'ai_conversations': {},
             'personal_repos': {},
             'org_repos': {},
+            'web_bookmarks': {},
         }
     
+    def add_web_bookmark_results(self, results: Dict):
+        """Add web bookmark analyzer results to inventory."""
+        self.inventory['web_bookmarks'] = results
+
     def add_archive_results(self, results: Dict):
         """Add archive scanner results to inventory."""
         self.inventory['archives'] = results
@@ -93,6 +98,13 @@ class InventoryGenerator:
             summary['org_repos'] = {
                 'total_repos': org_stats.get('total_repos', 0),
                 'by_status': org_stats.get('by_status', {}),
+            }
+
+        # Web bookmarks summary
+        if self.inventory['web_bookmarks']:
+            bookmark_stats = self.inventory['web_bookmarks'].get('stats', {})
+            summary['web_bookmarks'] = {
+                'total_bookmarks': bookmark_stats.get('total_bookmarks', 0),
             }
         
         return summary

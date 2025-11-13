@@ -45,6 +45,7 @@ python main.py [OPTIONS]
 - `--ai-conversations PATH` - Load AI conversations
 - `--personal-repos USERNAME` - Analyze personal GitHub repos
 - `--org-repos ORGNAME` - Analyze organization repos
+- `--web-bookmarks PATH` - Analyze web bookmarks from an export file
 - `--github-token TOKEN` - GitHub token (or use GITHUB_TOKEN env var)
 - `--output-dir DIR` - Output directory (default: ./output)
 - `--no-inventory` - Skip inventory generation
@@ -58,7 +59,8 @@ from cognitive_tribunal import (
     ArchiveScanner,
     AIContextAggregator,
     PersonalRepoAnalyzer,
-    OrgRepoAnalyzer
+    OrgRepoAnalyzer,
+    WebBookmarkAnalyzer
 )
 
 # Archive scanning
@@ -154,6 +156,18 @@ export GITHUB_TOKEN="your_token"
 python main.py --org-repos your-org --output-dir ./output
 ```
 
+### Module 5: Web Bookmark Analyzer
+
+Analyzes web bookmark export files:
+- Parses Netscape Bookmark File Format
+- Extracts URLs, titles, and creation dates
+- Provides statistics on bookmark collections
+
+**Example:**
+```bash
+python main.py --web-bookmarks /path/to/bookmarks.html --output-dir ./output
+```
+
 ## Configuration
 
 ### Using config.yaml
@@ -234,6 +248,7 @@ Each module generates detailed JSON:
 - `ai_conversations.json` - Conversation catalog with messages
 - `personal_repos.json` - Repository analysis with metrics
 - `org_repos.json` - Organization health and dependencies
+- `web_bookmarks.json` - Web bookmark analysis
 
 ## Examples
 

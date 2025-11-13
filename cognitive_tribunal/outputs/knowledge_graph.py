@@ -77,7 +77,21 @@ class KnowledgeGraphGenerator:
         # Process org repos
         if 'org_repos' in inventory:
             self._process_org_repos(inventory['org_repos'])
+
+        # Process web bookmarks
+        if 'web_bookmarks' in inventory:
+            self._process_web_bookmarks(inventory['web_bookmarks'])
     
+    def _process_web_bookmarks(self, bookmark_data: Dict):
+        """Process web bookmark data into graph nodes and edges."""
+        # Add web bookmarks root node
+        self.add_node('web_bookmarks', 'collection', {
+            'name': 'Web Bookmarks',
+            'total': bookmark_data.get('stats', {}).get('total_bookmarks', 0),
+        })
+        # In a more advanced implementation, we could parse URLs and
+        # create nodes for domains, tags, etc. For now, we'll keep it simple.
+
     def _process_archives(self, archive_data: Dict):
         """Process archive data into graph nodes and edges."""
         # Add archive root node
