@@ -2,6 +2,19 @@
 
 Comprehensive archaeological dig tool for multi-layer cognitive ecosystem. Audits previous chaos: all disparate sources: archives, AI conversations, personal repos, and org repos. Generates complete inventory, knowledge graph, and triage recommendations to transform scattered creative history into organized system foundation.
 
+## 📚 Documentation
+
+**New to this project?**
+- 📖 **[Documentation Hub](docs/)** - Setup guides, user guides, and analysis reports
+- 🎯 **[Quick Start](docs/guides/INTEGRATION_QUICK_START.md)** - Start integrating forks in 15 minutes
+- 📋 **[Integration Queue](context/planning/INTEGRATION_QUEUE.md)** - Track 42 fork integrations
+- 🔄 **[Current State](CONTEXTUAL_RELAY.md)** - Where we are and what's next
+
+**Quick Links:**
+- [Setup GitHub Token](docs/setup/GITHUB_TOKEN_SETUP.md)
+- [Complete Ingestion Plan](context/planning/INGESTION_PLAN.md)
+- [Repository Cleanup Plan](REPO_CLEANUP_PLAN.md)
+
 ## Features
 
 ### 🗂️ Module 1: Archive Scanner
