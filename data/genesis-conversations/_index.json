@@ -1,0 +1,28 @@
+{
+  "source": "genesis-chat-preservation",
+  "generated_at": "2025-11-18T00:43:24.271271",
+  "conversation_count": 16,
+  "files": [
+    "conversation_001.json",
+    "conversation_002.json",
+    "conversation_003.json",
+    "conversation_004.json",
+    "conversation_005.json",
+    "conversation_006.json",
+    "conversation_007.json",
+    "conversation_008.json",
+    "conversation_009.json",
+    "conversation_010.json",
+    "conversation_011.json",
+    "conversation_012.json",
+    "conversation_013.json",
+    "conversation_014.json",
+    "conversation_015.json",
+    "conversation_016.json"
+  ],
+  "metadata": {
+    "original_file": "context/history/genesis-chat-preservation.md",
+    "conversion_tool": "convert_genesis_chat.py",
+    "description": "Curated AI conversations from cognitive OS architecture planning"
+  }
+}
