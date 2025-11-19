@@ -14,6 +14,13 @@ Comprehensive archaeological dig tool for multi-layer cognitive ecosystem. Audit
 - 🏛️ **[Public Archival Guide](docs/PUBLIC_ARCHIVAL_GUIDE.md)** - Publishing datasets for academic use
 - 🎨 **[Creative Abstractions](docs/CREATIVE_ABSTRACTIONS.md)** - Data art and creative applications
 
+**Project Governance:**
+- 📋 **[Governance Framework](docs/GOVERNANCE.md)** - Metadata, licensing, consent, standards
+- 🗺️ **[Roadmap](ROADMAP.md)** - Development plan and agent handoff guide
+- 📊 **[System Analysis](docs/SYSTEM_ANALYSIS.md)** - Blindspots, shatterpoints, evolution opportunities
+- 🤝 **[Contributing](CONTRIBUTING.md)** - How to contribute code, datasets, or documentation
+- 📜 **[Code of Conduct](CODE_OF_CONDUCT.md)** - Community standards
+
 **Quick Links:**
 - [Setup GitHub Token](docs/setup/GITHUB_TOKEN_SETUP.md)
 - [Complete Ingestion Plan](context/planning/INGESTION_PLAN.md)
