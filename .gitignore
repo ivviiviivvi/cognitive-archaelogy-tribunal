@@ -40,28 +40,14 @@ env/
 .DS_Store
 Thumbs.db
 
-# Output files
-output/
+# Output files (configurable - see output/.gitignore for public exports)
+output/*.log
 *.json.bak
-*.log
 
-# Ingestion data files (keep directory structure and READMEs)
-ingestion/ai-exports/*.json
-ingestion/ai-exports/**/
-!ingestion/ai-exports/README.md
-ingestion/archives/*.txt
-ingestion/archives/**/
-!ingestion/archives/README.md
-!ingestion/archives/.gitkeep
-ingestion/bookmarks/*.html
-ingestion/bookmarks/**/
-!ingestion/bookmarks/README.md
-ingestion/browser-tabs/*.txt
-ingestion/browser-tabs/*.json
-ingestion/browser-tabs/**/
-!ingestion/browser-tabs/README.md
-
-# Credentials
+# Private credentials only
 .env
 config.local.yaml
 secrets.yaml
+
+# Personal overrides (create .gitignore.local for private-only data)
+!.gitignore.local

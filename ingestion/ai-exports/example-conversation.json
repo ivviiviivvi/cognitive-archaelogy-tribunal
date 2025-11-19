@@ -1,0 +1,55 @@
+{
+  "title": "Example: Exploring Cognitive Archaeology Concepts",
+  "create_time": 1700000000,
+  "update_time": 1700001200,
+  "mapping": {
+    "msg_001": {
+      "id": "msg_001",
+      "message": {
+        "id": "msg_001",
+        "author": {"role": "user"},
+        "create_time": 1700000000,
+        "content": {
+          "parts": ["What is cognitive archaeology and how can it help organize my digital life?"]
+        }
+      }
+    },
+    "msg_002": {
+      "id": "msg_002",
+      "message": {
+        "id": "msg_002",
+        "author": {"role": "assistant"},
+        "create_time": 1700000120,
+        "content": {
+          "parts": [
+            "Cognitive archaeology is the study of past human behavior and thought through material remains. Applied to your digital life, it means:\n\n1. Excavating scattered digital artifacts (files, repos, conversations)\n2. Classifying and cataloging findings\n3. Building knowledge graphs of relationships\n4. Extracting patterns and insights\n5. Creating actionable triage reports\n\nThe goal is transforming chaos into organized, searchable knowledge systems."
+          ]
+        }
+      }
+    },
+    "msg_003": {
+      "id": "msg_003",
+      "message": {
+        "id": "msg_003",
+        "author": {"role": "user"},
+        "create_time": 1700000240,
+        "content": {
+          "parts": ["How would I scan my archives and bookmarks?"]
+        }
+      }
+    },
+    "msg_004": {
+      "id": "msg_004",
+      "message": {
+        "id": "msg_004",
+        "author": {"role": "assistant"},
+        "create_time": 1700000360,
+        "content": {
+          "parts": [
+            "Here's the workflow:\n\n1. Archives:\n   - Create ingestion/archives/locations.txt\n   - List paths: /Users/you/Dropbox, /Users/you/iCloud Drive\n   - Run: ./scripts/ingest_archives.sh\n\n2. Bookmarks:\n   - Export from browser (Chrome: ⋮ → Export bookmarks)\n   - Move HTML to ingestion/bookmarks/\n   - Run: ./scripts/ingest_bookmarks.sh\n\n3. Review:\n   - Check output/ for JSON results\n   - Read triage_report.txt for recommendations\n\nEverything is processed locally and can be committed for public archival."
+          ]
+        }
+      }
+    }
+  }
+}

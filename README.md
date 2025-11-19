@@ -10,9 +10,14 @@ Comprehensive archaeological dig tool for multi-layer cognitive ecosystem. Audit
 - 📋 **[Integration Queue](context/planning/INTEGRATION_QUEUE.md)** - Track 42 fork integrations
 - 🔄 **[Current State](CONTEXTUAL_RELAY.md)** - Where we are and what's next
 
+**For Researchers & Creatives:**
+- 🏛️ **[Public Archival Guide](docs/PUBLIC_ARCHIVAL_GUIDE.md)** - Publishing datasets for academic use
+- 🎨 **[Creative Abstractions](docs/CREATIVE_ABSTRACTIONS.md)** - Data art and creative applications
+
 **Quick Links:**
 - [Setup GitHub Token](docs/setup/GITHUB_TOKEN_SETUP.md)
 - [Complete Ingestion Plan](context/planning/INGESTION_PLAN.md)
+- [Ingestion Chambers](ingestion/README.md) - How to load your data
 - [Repository Cleanup Plan](REPO_CLEANUP_PLAN.md)
 
 ## Features
