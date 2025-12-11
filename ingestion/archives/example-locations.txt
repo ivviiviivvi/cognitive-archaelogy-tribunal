@@ -1,0 +1,36 @@
+# Example Archive Locations Configuration
+#
+# This is a sample configuration showing how to specify archive directories.
+# Copy this pattern to create your own locations.txt file.
+#
+# Format: One absolute path per line
+# Comments: Lines starting with # are ignored
+# Empty lines: Ignored
+
+# Cloud Storage Examples
+# /Users/username/Library/Mobile Documents/com~apple~CloudDocs
+# /Users/username/Dropbox
+# /Users/username/Google Drive
+
+# Local Archives Examples
+# /Users/username/Documents/Archives
+# /Users/username/Documents/OldProjects
+# /Users/username/Pictures/Archive
+
+# External Drives Examples
+# /Volumes/Backup
+# /Volumes/TimeMachine
+# /Volumes/ExternalDrive
+
+# Network Storage Examples (if mounted)
+# /Volumes/NAS/archive
+# /mnt/network-storage
+
+# For Public Demo: Scan a small test directory
+# /Users/username/Documents/PublicArchive
+
+# Instructions:
+# 1. Uncomment relevant paths (remove leading #)
+# 2. Replace 'username' with your actual username
+# 3. Ensure directories exist and are accessible
+# 4. Run: ./scripts/ingest_archives.sh

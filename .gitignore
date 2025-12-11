@@ -40,12 +40,14 @@ env/
 .DS_Store
 Thumbs.db
 
-# Output files
-output/
+# Output files (configurable - see output/.gitignore for public exports)
+output/*.log
 *.json.bak
-*.log
 
-# Credentials
+# Private credentials only
 .env
 config.local.yaml
 secrets.yaml
+
+# Personal overrides (create .gitignore.local for private-only data)
+!.gitignore.local

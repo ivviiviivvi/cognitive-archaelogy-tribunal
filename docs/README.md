@@ -16,6 +16,10 @@ Comprehensive documentation for Cognitive Archaeology Tribunal.
 **Using the tool:**
 - **[Integration Quick Start](guides/INTEGRATION_QUICK_START.md)** - Start integrating personal forks to org repos (15 min guide)
 
+**Public & Academic Use:**
+- **[Public Archival Guide](PUBLIC_ARCHIVAL_GUIDE.md)** - Publishing datasets for research and preservation
+- **[Creative Abstractions](CREATIVE_ABSTRACTIONS.md)** - Using tribunal outputs for creative projects and art
+
 ---
 
 ## 📊 Analysis Reports

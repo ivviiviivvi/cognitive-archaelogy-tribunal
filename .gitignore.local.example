@@ -1,0 +1,23 @@
+# .gitignore.local - Private Data Overrides
+#
+# Copy this file to .gitignore.local to keep specific data private
+# (This file is tracked, .gitignore.local is not)
+#
+# Example use cases:
+# - Personal/sensitive exports you don't want public
+# - Work-in-progress data
+# - Large files you want to keep local
+#
+
+# Example: Keep specific ingestion data private
+# ingestion/ai-exports/personal-conversations.json
+# ingestion/bookmarks/work-bookmarks.html
+
+# Example: Keep specific outputs private
+# output/personal-analysis/
+
+# Example: Keep all ingestion data private (revert to private mode)
+# ingestion/ai-exports/*.json
+# ingestion/archives/locations.txt
+# ingestion/bookmarks/*.html
+# ingestion/browser-tabs/*
