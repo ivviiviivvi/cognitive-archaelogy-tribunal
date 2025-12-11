@@ -22,6 +22,18 @@ Active planning and tracking for ongoing work.
 
 ## 📊 Strategic Plans
 
+### [Master Task Hierarchy](MASTER_TASK_HIERARCHY.md) ⭐⭐
+**Complete 157-task breakdown for the entire Cognitive OS project**
+
+**Organization:**
+- Linear Order: Tasks as they emerged during planning
+- Logical Order: Tasks organized into 12 execution phases
+- Unique IDs (T001–T157) for cross-referencing
+
+**Use this for:** Comprehensive project roadmap and task tracking
+
+---
+
 ### [Ingestion Plan](INGESTION_PLAN.md)
 **Complete 5-phase strategy for ingesting all 4 layers:**
 
@@ -63,6 +75,7 @@ Active planning and tracking for ongoing work.
 
 | Need to... | Go to... |
 |------------|----------|
+| See all 157 project tasks | [Master Task Hierarchy](MASTER_TASK_HIERARCHY.md) |
 | Start integrating forks | [Integration Queue](INTEGRATION_QUEUE.md) Tier 1 |
 | See overall strategy | [Ingestion Plan](INGESTION_PLAN.md) |
 | Get quick commands | [Next Steps](NEXT_STEPS.md) |
@@ -71,5 +84,5 @@ Active planning and tracking for ongoing work.
 
 ---
 
-**Updated:** 2025-11-17
-**Status:** Phase 2 complete, integration beginning
+**Updated:** 2025-11-19
+**Status:** Phase 2 complete, master task hierarchy established
