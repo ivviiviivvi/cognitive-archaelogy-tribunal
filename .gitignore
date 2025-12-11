@@ -27,16 +27,10 @@ MANIFEST
 venv/
 ENV/
 env/
-
-# Configuration and local development
-.config/
-.venv/
-.vscode/
-.trunk/
-.history/
-.specstory/
+.venv
 
 # IDE
+.vscode/
 .idea/
 *.swp
 *.swo

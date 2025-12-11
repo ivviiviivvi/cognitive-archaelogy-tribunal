@@ -4,10 +4,11 @@ Cognitive Archaeology Tribunal - Main CLI
 Command-line interface for running the complete audit suite.
 """
 
+import os
 import sys
- 
 import argparse
 from pathlib import Path
+from typing import Optional
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -20,14 +21,6 @@ from cognitive_tribunal.modules.web_bookmark_analyzer import WebBookmarkAnalyzer
 from cognitive_tribunal.outputs.inventory import InventoryGenerator
 from cognitive_tribunal.outputs.knowledge_graph import KnowledgeGraphGenerator
 from cognitive_tribunal.outputs.triage_report import TriageReportGenerator
-
-
-def load_github_token(provided_token):
-    """Load GitHub token from argument or environment."""
-    if provided_token:
-        return provided_token
-    import os
-    return os.getenv('GITHUB_TOKEN')
 
 
 def main():

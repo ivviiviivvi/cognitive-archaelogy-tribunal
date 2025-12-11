@@ -1,6 +1,6 @@
 Logical Order Version
 
-Phase 0: Preparation and Foundation
+Phase 0: Preparation and Foundation
 	•	T001 Clarify where your content lives: list all locations for messy data, brainstorms, old drafts, repos, and notes
 	•	T002 Enumerate formats in use: markdown, code files, notes, docs, media, etc.
 	•	T003 Decide your end goals: consolidation, documentation, refined product, or all of the above
@@ -17,7 +17,7 @@ Phase 0: Preparation and Foundation
 	•	T014 Define a clear version control strategy and branching model
 	•	T015 Create reusable templates and patterns extracted from your prototypes
 
-Phase 1: Audit and Consolidate Personal Repos
+Phase 1: Audit and Consolidate Personal Repos
 	•	T016 Perform a first‑pass audit of all 39 personal repositories
 	•	T017 Classify each personal repo as active prototype, archived experiment, reference, or junk
 	•	T018 Identify common themes and patterns across those personal repos
@@ -32,7 +32,7 @@ Phase 1: Audit and Consolidate Personal Repos
 	•	T027 Implement documentation generation for the consolidated system
 	•	T028 Create a new production‑oriented repository that synthesizes your best work
 
-Phase 2: Review and Integrate Org Repos
+Phase 2: Review and Integrate Org Repos
 	•	T029 Review the 23 org repos in ivi374forivi and map their roles (core, governance, tools, web, data, apps)
 	•	T030 Map how personal repos conceptually feed into those org repos
 	•	T031 Identify which personal repos are candidates to graduate to the org
@@ -40,13 +40,13 @@ Phase 2: Review and Integrate Org Repos
 	•	T033 Map personal→org dependencies: for each org repo, trace which personal experiments informed it
 	•	T034 Define criteria for when a personal repo should graduate to the org
 
-Phase 3: Design System Architecture
+Phase 3: Design System Architecture
 	•	T035 Design a ‘central nervous system’ architecture using auto‑revision‑epistemic‑engine, a‑recursive‑root, and solve‑et‑coagula
 	•	T036 Build or plan a data intake pipeline using public‑record‑data‑scrapper, tab‑bookmark‑manager, and a future personal‑repo ingestion tool
 	•	T037 Define a context & documentation layer using a‑context7, docs‑et‑cet‑alia, and a new knowledge‑graph builder
 	•	T038 Plan a staging‑to‑production pipeline from personal repos into org repos
 
-Phase 4: Build Tools and Synthesizers
+Phase 4: Build Tools and Synthesizers
 	•	T039 Design and implement meta‑repo‑analyzer
 	•	T040 Scan each personal repo with meta‑repo‑analyzer
 	•	T041 Extract READMEs and core code using meta‑repo‑analyzer
@@ -63,8 +63,8 @@ Phase 4: Build Tools and Synthesizers
 	•	T052 Design a recursive‑refinement‑orchestrator that uses existing orchestration repos
 	•	T053 Design a meta‑repository (meta‑cognition‑hub) that ingests from AI, personal, and org layers and synthesizes outputs
 
-Phase 5: Archive and Data Processing
-	•	T054 Collect all archives (iCloud, Dropbox, hard drives) to expand scope to Layer 0
+Phase 5: Archive and Data Processing
+	•	T054 Collect all archives (iCloud, Dropbox, hard drives) to expand scope to Layer 0
 	•	T055 Build archive‑aggregator to scan all storage sources, dedupe, and create an inventory with checksums and metadata
 	•	T056 Build temporal‑context‑reconstructor to sort materials by time and reconstruct timelines
 	•	T057 Build multi‑modal‑content‑extractor with sub‑pipelines for writing, music, and video
@@ -90,7 +90,7 @@ Phase 5: Archive and Data Processing
 	•	T077 Identify gaps (unimplemented ideas) during archive integration
 	•	T078 Generate an implementation queue with priorities for archive integration
 
-Phase 6: Governance and Suite Planning
+Phase 6: Governance and Suite Planning
 	•	T079 Recognize the actual system state as pre‑synthesis chaos and re‑cast the effort as cognitive archaeology
 	•	T080 Plan and create cognitive‑archaelogy‑suite as the suite to audit archives, AI contexts, personal repos, and org repos
 	•	T081 Define system‑constitution rules and migration categories (keep, mine, archive, delete; production, development, experimental, consolidate)
@@ -101,7 +101,7 @@ Phase 6: Governance and Suite Planning
 	•	T086 Correct the architecture: make cognitive‑archaelogy‑suite the foundation before other synthesis repos
 	•	T087 Add environment variables, dependencies, and execution commands to cognitive‑archaelogy‑suite
 
-Phase 7: Repository Creation and Implementation
+Phase 7: Repository Creation and Implementation
 	•	T088 Create the cognitive‑archaelogy‑tribunal repository and open an initial pull request
 	•	T089 Review the tribunal pull request and align its implementation with the four‑layer audit plan
 	•	T090 Create or confirm creation of cognitive‑archaelogy‑tribunal
@@ -127,7 +127,7 @@ Phase 7: Repository Creation and Implementation
 	•	T123 Perform this week tasks: start implementing ai‑context‑compiler
 	•	T124 Perform this week tasks: start implementing repo‑lineage‑tracker
 
-Phase 8: Master Plan and Preservation
+Phase 8: Master Plan and Preservation
 	•	T107 Approve and execute creation of cognitive‑os‑master‑plan as the architectural record and source of truth
 	•	T108 Manually create the cognitive‑os‑master‑plan repository in ivi374forivi
 	•	T109 Add a README and MIT license to cognitive‑os‑master‑plan
@@ -137,7 +137,7 @@ Phase 8: Master Plan and Preservation
 	•	T113 Create additional directories like roadmap and specifications in cognitive‑os‑master‑plan
 	•	T114 Insert the full planning conversation into planning‑conversations/2025-11-02_initial-architecture-planning.md
 	•	T115 Export this conversation using chatgpt‑exporter and save it under ~/ai‑conversations/2025-11-02_cognitive‑os‑architecture‑planning.json
-	•	T116 Link from cognitive‑archaelogy‑tribunal README to cognitive‑os‑master‑plan and note tribunal is component 1 of 8 in the roadmap
+	•	T116 Link from cognitive‑archaelogy‑tribunal README to cognitive‑os‑master‑plan and note tribunal is component 1 of 8 in the roadmap
 	•	T117 Perform tonight tasks: export the conversation and save as JSON
 	•	T118 Perform tonight tasks: create cognitive‑os‑master‑plan
 	•	T119 Perform tonight tasks: update tribunal README with link and component note
@@ -146,7 +146,7 @@ Phase 8: Master Plan and Preservation
 	•	T127 Create tracking issues (one per planned repo) for preservation
 	•	T128 Post the conversation into an org‑level GitHub Discussion for preservation
 
-Phase 9: Issue Creation and Linking
+Phase 9: Issue Creation and Linking
 	•	T129 Create issue tying cognitive‑archaelogy‑tribunal to the master plan and conversation
 	•	T130 Create issue tying system‑constitution to the master plan and conversation
 	•	T131 Create issue tying meta‑synthesis‑orchestrator to the master plan and conversation
@@ -156,25 +156,25 @@ Phase 9: Issue Creation and Linking
 	•	T135 Create issue tying graduation‑pipeline‑automator to the master plan and conversation
 	•	T136 Create issue tying recursive‑feedback‑integrator to the master plan and conversation
 
-Phase 10: Primordial Synthesis Engine Implementation
-	•	T137 Create primordial‑synthesis‑engine in the org (Week 1)
-	•	T138 Build personal repo analyzer to scan all 35 repos and generate cluster analysis (Week 1)
-	•	T139 Aggregate existing AI contexts via chatgpt‑exporter into a unified DB (Week 1)
-	•	T140 Build archive intake scanner for iCloud/Dropbox with checksums and metadata extraction (Week 2)
-	•	T141 Process archive content: text, music (using maxmsp_ai patterns), and video metadata (Week 2)
-	•	T142 Map relationships across archive files, AI conversations, personal repos, and org repos (Week 3)
-	•	T143 Build a concept/timeline view of evolution (Week 3)
-	•	T144 Generate consolidated documentation: complete creative history, concept genealogy, implementation queue (Week 4)
-	•	T145 Create feedback loops that resurface archive material and suggest repo graduations (Week 4)
+Phase 10: Primordial Synthesis Engine Implementation
+	•	T137 Create primordial‑synthesis‑engine in the org (Week 1)
+	•	T138 Build personal repo analyzer to scan all 35 repos and generate cluster analysis (Week 1)
+	•	T139 Aggregate existing AI contexts via chatgpt‑exporter into a unified DB (Week 1)
+	•	T140 Build archive intake scanner for iCloud/Dropbox with checksums and metadata extraction (Week 2)
+	•	T141 Process archive content: text, music (using maxmsp_ai patterns), and video metadata (Week 2)
+	•	T142 Map relationships across archive files, AI conversations, personal repos, and org repos (Week 3)
+	•	T143 Build a concept/timeline view of evolution (Week 3)
+	•	T144 Generate consolidated documentation: complete creative history, concept genealogy, implementation queue (Week 4)
+	•	T145 Create feedback loops that resurface archive material and suggest repo graduations (Week 4)
 
-Phase 11: System Architecture Operational Steps
-	•	T146 Audit existing resources (step 1 of system architecture)
-	•	T147 Extract valuable concepts (step 2 of system architecture)
-	•	T148 Organize into a coherent system (step 3 of system architecture)
-	•	T149 Synthesize into production‑ready outputs (step 4 of system architecture)
-	•	T150 Establish a decision framework for future additions (step 5 of system architecture)
+Phase 11: System Architecture Operational Steps
+	•	T146 Audit existing resources (step 1 of system architecture)
+	•	T147 Extract valuable concepts (step 2 of system architecture)
+	•	T148 Organize into a coherent system (step 3 of system architecture)
+	•	T149 Synthesize into production‑ready outputs (step 4 of system architecture)
+	•	T150 Establish a decision framework for future additions (step 5 of system architecture)
 
-Phase 12: Execution and Iteration
+Phase 12: Execution and Iteration
 	•	T151 Run the first archaeological dig using cognitive‑archaelogy‑suite and store results in outputs/ and synthesis‑reports/
 	•	T152 Apply repository graduation criteria to personal repos and mark candidates for promotion to org
 	•	T153 Graduate approximately 5 personal repos based on audit results

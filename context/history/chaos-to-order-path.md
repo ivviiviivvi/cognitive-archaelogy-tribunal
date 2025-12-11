@@ -67,7 +67,7 @@ Repository Tools and Synthesizers
 	•	T053 Design a meta‑repository (meta‑cognition‑hub) that ingests from AI, personal, and org layers and synthesizes outputs
 
 Archive Ingestion and Processing
-	•	T054 Collect all archives (iCloud, Dropbox, hard drives) to expand scope to Layer 0
+	•	T054 Collect all archives (iCloud, Dropbox, hard drives) to expand scope to Layer 0
 	•	T055 Build archive‑aggregator to scan all storage sources, dedupe, and create an inventory with checksums and metadata
 	•	T056 Build temporal‑context‑reconstructor to sort materials by time and reconstruct timelines
 	•	T057 Build multi‑modal‑content‑extractor with sub‑pipelines for writing, music, and video
@@ -110,7 +110,7 @@ Suite Planning and Governance
 	•	T086 Correct the architecture: make cognitive‑archaelogy‑suite the foundation before other synthesis repos
 	•	T087 Add environment variables, dependencies, and execution commands to cognitive‑archaelogy‑suite
 
-Repository Creation and Implementation – Phase 1
+Repository Creation and Implementation – Phase 1
 	•	T088 Create the cognitive‑archaelogy‑tribunal repository and open an initial pull request
 	•	T089 Review the tribunal pull request and align its implementation with the four‑layer audit plan
 	•	T090 Create or confirm creation of cognitive‑archaelogy‑tribunal
@@ -141,12 +141,12 @@ Master Plan and Immediate Steps
 	•	T113 Create additional directories like roadmap and specifications in cognitive‑os‑master‑plan
 	•	T114 Insert the full planning conversation into planning‑conversations/2025-11-02_initial-architecture-planning.md
 	•	T115 Export this conversation using chatgpt‑exporter and save it under ~/ai‑conversations/2025-11-02_cognitive‑os‑architecture‑planning.json
-	•	T116 Link from cognitive‑archaelogy‑tribunal README to cognitive‑os‑master‑plan and note tribunal is component 1 of 8 in the roadmap
+	•	T116 Link from cognitive‑archaelogy‑tribunal README to cognitive‑os‑master‑plan and note tribunal is component 1 of 8 in the roadmap
 	•	T117 Perform tonight tasks: export the conversation and save as JSON
 	•	T118 Perform tonight tasks: create cognitive‑os‑master‑plan
 	•	T119 Perform tonight tasks: update tribunal README with link and component note
 
-Repository Creation and Implementation – Phase 2
+Repository Creation and Implementation – Phase 2
 	•	T120 Perform this week tasks: create system‑constitution repo
 	•	T121 Perform this week tasks: create meta‑synthesis‑orchestrator repo
 	•	T122 Perform this week tasks: start implementing archive‑resurrection‑engine
@@ -170,22 +170,22 @@ Issue Creation and Linking
 	•	T136 Create issue tying recursive‑feedback‑integrator to the master plan and conversation
 
 Primordial Synthesis Engine Tasks
-	•	T137 Create primordial‑synthesis‑engine in the org (Week 1)
-	•	T138 Build personal repo analyzer to scan all 35 repos and generate cluster analysis (Week 1)
-	•	T139 Aggregate existing AI contexts via chatgpt‑exporter into a unified DB (Week 1)
-	•	T140 Build archive intake scanner for iCloud/Dropbox with checksums and metadata extraction (Week 2)
-	•	T141 Process archive content: text, music (using maxmsp_ai patterns), and video metadata (Week 2)
-	•	T142 Map relationships across archive files, AI conversations, personal repos, and org repos (Week 3)
-	•	T143 Build a concept/timeline view of evolution (Week 3)
-	•	T144 Generate consolidated documentation: complete creative history, concept genealogy, implementation queue (Week 4)
-	•	T145 Create feedback loops that resurface archive material and suggest repo graduations (Week 4)
+	•	T137 Create primordial‑synthesis‑engine in the org (Week 1)
+	•	T138 Build personal repo analyzer to scan all 35 repos and generate cluster analysis (Week 1)
+	•	T139 Aggregate existing AI contexts via chatgpt‑exporter into a unified DB (Week 1)
+	•	T140 Build archive intake scanner for iCloud/Dropbox with checksums and metadata extraction (Week 2)
+	•	T141 Process archive content: text, music (using maxmsp_ai patterns), and video metadata (Week 2)
+	•	T142 Map relationships across archive files, AI conversations, personal repos, and org repos (Week 3)
+	•	T143 Build a concept/timeline view of evolution (Week 3)
+	•	T144 Generate consolidated documentation: complete creative history, concept genealogy, implementation queue (Week 4)
+	•	T145 Create feedback loops that resurface archive material and suggest repo graduations (Week 4)
 
 System Architecture Steps
-	•	T146 Audit existing resources (step 1 of system architecture)
-	•	T147 Extract valuable concepts (step 2 of system architecture)
-	•	T148 Organize into a coherent system (step 3 of system architecture)
-	•	T149 Synthesize into production‑ready outputs (step 4 of system architecture)
-	•	T150 Establish a decision framework for future additions (step 5 of system architecture)
+	•	T146 Audit existing resources (step 1 of system architecture)
+	•	T147 Extract valuable concepts (step 2 of system architecture)
+	•	T148 Organize into a coherent system (step 3 of system architecture)
+	•	T149 Synthesize into production‑ready outputs (step 4 of system architecture)
+	•	T150 Establish a decision framework for future additions (step 5 of system architecture)
 
 Audit and Synthesis Runs
 	•	T151 Run the first archaeological dig using cognitive‑archaelogy‑suite and store results in outputs/ and synthesis‑reports/

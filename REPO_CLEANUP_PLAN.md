@@ -8,15 +8,13 @@
 ## Current Issues
 
 ### Root Directory Clutter (13+ markdown files)
-
 - Planning docs mixed with operational docs
 - Context preservation files in root
 - Generated analysis files in root
 - Naming inconsistencies (UPPERCASE.md, >symbols.MD)
 
 ### File Organization Needed
-
-```text
+```
 Current (cluttered):
 ├── README.md
 ├── USAGE.md
@@ -40,7 +38,7 @@ Current (cluttered):
 
 ## Proposed Structure
 
-```text
+```
 cognitive-archaelogy-tribunal/
 ├── README.md                          # Main entry point
 ├── USAGE.md                          # How to use the tool
@@ -103,26 +101,22 @@ mkdir -p context/history
 ### Phase 2: Move Files (10 min)
 
 **Setup Documentation:**
-
 ```bash
 mv GITHUB_TOKEN_SETUP.md docs/setup/github-token-setup.md
 ```
 
 **User Guides:**
-
 ```bash
 mv INTEGRATION_QUICK_START.md docs/guides/integration-quick-start.md
 ```
 
 **Analysis Documents:**
-
 ```bash
 mv PHASE2_ANALYSIS_SUMMARY.md docs/analysis/phase2-repo-analysis.md
 mv PHASE2_REVISED_INTEGRATION_ANALYSIS.md docs/analysis/phase2-integration-analysis.md
 ```
 
 **Planning Documents:**
-
 ```bash
 mv INGESTION_PLAN.md context/planning/ingestion-plan.md
 mv INTEGRATION_QUEUE.md context/planning/integration-queue.md
@@ -130,7 +124,6 @@ mv NEXT_STEPS.md context/planning/next-steps.md
 ```
 
 **Context Preservation:**
-
 ```bash
 mv "CHAOS>LOGOS-PATH_STEPXSTEP.MD" context/history/chaos-to-logos-path.md
 mv "CHAOS>ORDER_LINEAR-PATH_STEPXSTEP.MD" context/history/chaos-to-order-path.md
@@ -139,7 +132,6 @@ mv "4_ivi374_F0Rivi4_ CognitiveOperatingSystem.md" context/history/cognitive-os-
 ```
 
 **Large Files (Optional):**
-
 ```bash
 # Move PDF to context/history or consider removing if not needed in repo
 mv "4_ivi374_F0Rivi4_  CognitiveOperatingSystem.pdf" context/history/
@@ -149,7 +141,6 @@ mv "4_ivi374_F0Rivi4_  CognitiveOperatingSystem.pdf" context/history/
 ### Phase 3: Create README Files (15 min)
 
 **docs/README.md:**
-
 ```markdown
 # Documentation
 
@@ -167,7 +158,6 @@ mv "4_ivi374_F0Rivi4_  CognitiveOperatingSystem.pdf" context/history/
 ```
 
 **context/README.md:**
-
 ```markdown
 # Context Preservation
 
@@ -188,7 +178,6 @@ Historical context and evolution:
 ```
 
 **context/planning/README.md:**
-
 ```markdown
 # Current Planning Documents
 
@@ -205,7 +194,6 @@ Historical context and evolution:
 ### Phase 4: Update Cross-References (10 min)
 
 Files that reference moved documents need updates:
-
 - README.md - Update links to moved files
 - Any docs referencing `INTEGRATION_QUEUE.md` → `context/planning/integration-queue.md`
 - Any docs referencing other moved files
@@ -236,14 +224,12 @@ git push
 ## Benefits
 
 ### Before (Cluttered)
-
 - 13+ markdown files in root
 - Hard to find specific docs
 - Unclear which docs are current vs historical
 - Mix of operational and context docs
 
 ### After (Organized)
-
 - 3 markdown files in root (README, USAGE, PROJECT_SUMMARY)
 - Clear navigation: docs/ for users, context/ for planning
 - Organized by purpose (setup, guides, analysis, planning, history)
@@ -254,7 +240,6 @@ git push
 ## Rollback Plan
 
 If needed, restore original structure:
-
 ```bash
 git revert [commit-hash]
 # Or manually move files back

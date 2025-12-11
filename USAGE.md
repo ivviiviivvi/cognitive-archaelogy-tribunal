@@ -1,7 +1,6 @@
 # Usage Guide
 
 ## Table of Contents
-
 1. [Installation](#installation)
 2. [Basic Usage](#basic-usage)
 3. [Module Details](#module-details)
@@ -12,25 +11,21 @@
 ## Installation
 
 ### Using pip (recommended)
-
 ```bash
 pip install -e .
 ```
 
 ### Manual installation
-
 ```bash
 pip install -r requirements.txt
 ```
 
 ### Setting up GitHub Token
-
 For GitHub repository analysis, you'll need a personal access token:
 
-1. Go to <https://github.com/settings/tokens>
+1. Go to https://github.com/settings/tokens
 2. Generate a new token with `repo` scope
 3. Set the environment variable:
-
    ```bash
    export GITHUB_TOKEN="your_token_here"
    ```
@@ -45,8 +40,7 @@ Run the main script with desired modules:
 python main.py [OPTIONS]
 ```
 
-#### Options
-
+#### Options:
 - `--scan-archives PATH` - Scan archive directories
 - `--ai-conversations PATH` - Load AI conversations
 - `--personal-repos USERNAME` - Analyze personal GitHub repos
@@ -95,14 +89,12 @@ health = org_analyzer.generate_health_report()
 ### Module 1: Archive Scanner
 
 Scans file systems and identifies:
-
 - File types and categories
 - Duplicate files (content-based)
 - Large files
 - Old/unused files
 
 **Supported Storage:**
-
 - Local directories
 - Network drives
 - iCloud Drive mounts
@@ -110,7 +102,6 @@ Scans file systems and identifies:
 - Any accessible file system
 
 **Example:**
-
 ```bash
 python main.py --scan-archives "/Users/me/Documents,/Users/me/Dropbox" --output-dir ./output
 ```
@@ -118,7 +109,6 @@ python main.py --scan-archives "/Users/me/Documents,/Users/me/Dropbox" --output-
 ### Module 2: AI Context Aggregator
 
 Processes AI conversation exports:
-
 - ChatGPT conversation exports
 - Generic JSON conversation formats
 - Message extraction and parsing
@@ -126,14 +116,12 @@ Processes AI conversation exports:
 
 **ChatGPT Export Format:**
 The tool expects ChatGPT's native export format with `mapping` structure. To export:
-
 1. Go to ChatGPT settings
 2. Data Controls → Export data
 3. Wait for email with download link
 4. Extract and point tool to `conversations.json`
 
 **Example:**
-
 ```bash
 python main.py --ai-conversations "/path/to/chatgpt/export" --output-dir ./output
 ```
@@ -141,7 +129,6 @@ python main.py --ai-conversations "/path/to/chatgpt/export" --output-dir ./outpu
 ### Module 3: Personal Repo Analyzer
 
 Analyzes personal GitHub repositories:
-
 - Fork detection
 - Modification tracking in forks
 - Repository activity metrics
@@ -149,7 +136,6 @@ Analyzes personal GitHub repositories:
 - Triage recommendations
 
 **Example:**
-
 ```bash
 export GITHUB_TOKEN="your_token"
 python main.py --personal-repos your-username --output-dir ./output
@@ -158,7 +144,6 @@ python main.py --personal-repos your-username --output-dir ./output
 ### Module 4: Org Repo Analyzer
 
 Analyzes organization repositories:
-
 - Status tracking (active/stale/abandoned/archived)
 - Health scoring
 - Dependency detection
@@ -166,7 +151,6 @@ Analyzes organization repositories:
 - Issue tracking
 
 **Example:**
-
 ```bash
 export GITHUB_TOKEN="your_token"
 python main.py --org-repos your-org --output-dir ./output
@@ -175,13 +159,11 @@ python main.py --org-repos your-org --output-dir ./output
 ### Module 5: Web Bookmark Analyzer
 
 Analyzes web bookmark export files:
-
 - Parses Netscape Bookmark File Format
 - Extracts URLs, titles, and creation dates
 - Provides statistics on bookmark collections
 
 **Example:**
-
 ```bash
 python main.py --web-bookmarks /path/to/bookmarks.html --output-dir ./output
 ```
@@ -231,7 +213,6 @@ output:
 ### 1. Unified Inventory (inventory.json)
 
 Complete catalog of all discovered assets:
-
 - File statistics and metadata
 - Conversation summaries
 - Repository information
@@ -240,12 +221,10 @@ Complete catalog of all discovered assets:
 ### 2. Knowledge Graph
 
 Two formats:
-
 - `knowledge_graph.json` - Native format
 - `knowledge_graph_cytoscape.json` - Cytoscape.js compatible
 
 Visualizes relationships between:
-
 - File categories
 - Conversation sources
 - Repository dependencies
@@ -254,12 +233,10 @@ Visualizes relationships between:
 ### 3. Triage Report
 
 Two formats:
-
 - `triage_report.json` - Structured data
 - `triage_report.txt` - Human-readable
 
 Prioritized action items:
-
 - **High Priority**: Duplicates, abandoned repos with issues
 - **Medium Priority**: Unmodified forks, stale repos
 - **Low Priority**: Inactive projects, archiving suggestions
@@ -267,7 +244,6 @@ Prioritized action items:
 ### 4. Module-Specific Outputs
 
 Each module generates detailed JSON:
-
 - `archives.json` - Complete file inventory with deduplication
 - `ai_conversations.json` - Conversation catalog with messages
 - `personal_repos.json` - Repository analysis with metrics
@@ -277,7 +253,6 @@ Each module generates detailed JSON:
 ## Examples
 
 ### Example 1: Local Archive Audit
-
 ```bash
 python main.py \
   --scan-archives "/Users/me/Documents,/Users/me/Downloads" \
@@ -285,7 +260,6 @@ python main.py \
 ```
 
 ### Example 2: AI Conversation Analysis
-
 ```bash
 python main.py \
   --ai-conversations "/Users/me/Downloads/chatgpt-export" \
@@ -293,7 +267,6 @@ python main.py \
 ```
 
 ### Example 3: Personal GitHub Cleanup
-
 ```bash
 export GITHUB_TOKEN="ghp_yourtoken"
 python main.py \
@@ -302,7 +275,6 @@ python main.py \
 ```
 
 ### Example 4: Organization Health Check
-
 ```bash
 export GITHUB_TOKEN="ghp_yourtoken"
 python main.py \
@@ -311,7 +283,6 @@ python main.py \
 ```
 
 ### Example 5: Complete Digital Archaeology
-
 ```bash
 export GITHUB_TOKEN="ghp_yourtoken"
 python main.py \
@@ -323,7 +294,6 @@ python main.py \
 ```
 
 ### Example 6: Skip Specific Outputs
-
 ```bash
 python main.py \
   --scan-archives "/path/to/archives" \
@@ -420,7 +390,6 @@ python_repos = analyzer.get_repos_by_language('Python')
 ### GitHub API Rate Limits
 
 If you see rate limit errors:
-
 1. Use a GitHub token (authenticated requests have higher limits)
 2. Wait for the rate limit to reset
 3. Reduce the number of repos being analyzed
@@ -428,7 +397,6 @@ If you see rate limit errors:
 ### File Permission Errors
 
 If you get permission denied errors:
-
 1. Check file/directory permissions
 2. Run with appropriate user privileges
 3. Add paths to exclude patterns if needed
@@ -436,7 +404,6 @@ If you get permission denied errors:
 ### Large Archive Scans
 
 For very large archives:
-
 1. Limit scan depth with `max_depth` parameter
 2. Use exclude patterns to skip large directories
 3. Run scans on smaller subsets
@@ -444,7 +411,6 @@ For very large archives:
 ### Memory Usage
 
 For large datasets:
-
 1. Process modules separately instead of all at once
 2. Use `--no-graph` to skip graph generation
 3. Clear output directory between runs
@@ -452,6 +418,5 @@ For large datasets:
 ## Support
 
 For issues, questions, or contributions:
-
-- GitHub Issues: <https://github.com/ivi374forivi/cognitive-archaelogy-tribunal/issues>
+- GitHub Issues: https://github.com/ivi374forivi/cognitive-archaelogy-tribunal/issues
 - See CONTRIBUTING.md for contribution guidelines
