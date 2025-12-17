@@ -59,6 +59,30 @@ class ArchiveScanner:
         
         return False
     
+    def is_safe_path(self, path: Path) -> bool:
+        """
+        Check if the path is safe to scan.
+        Blocks root and sensitive system directories.
+        """
+        # Block root directory
+        if path == Path('/'):
+            return False
+
+        # Block sensitive system directories (Linux/Unix)
+        # Removed /tmp and /var as they might be legitimate targets for some users
+        sensitive_dirs = {
+            Path('/etc'), Path('/proc'), Path('/sys'),
+            Path('/boot'), Path('/dev'), Path('/run')
+        }
+
+        # Check if path is one of the sensitive dirs or inside them
+        # Using pathlib parents to check hierarchy robustly
+        for sensitive in sensitive_dirs:
+            if path == sensitive or sensitive in path.parents:
+                return False
+
+        return True
+
     def scan_directory(self, root_path: str, recursive: bool = True, max_depth: Optional[int] = None) -> Dict:
         """
         Scan a directory and classify all files.
@@ -79,6 +103,10 @@ class ArchiveScanner:
         if not root.is_dir():
             return {'error': f"Path is not a directory: {root_path}"}
         
+        # Security check
+        if not self.is_safe_path(root):
+            return {'error': f"Security Blocked: Scanning sensitive system path is not allowed: {root}"}
+
         print(f"Scanning directory: {root}")
         self.scanned_files = []
         self.deduplicator = Deduplicator()
