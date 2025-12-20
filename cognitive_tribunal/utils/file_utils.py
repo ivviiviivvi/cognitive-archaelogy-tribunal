@@ -66,8 +66,8 @@ class FileHasher:
         
         try:
             with open(file_path, 'rb') as f:
-                # Read in chunks to handle large files
-                for chunk in iter(lambda: f.read(8192), b''):
+                # Read in chunks to handle large files (64KB buffer)
+                for chunk in iter(lambda: f.read(65536), b''):
                     hash_func.update(chunk)
             return hash_func.hexdigest()
         except (IOError, OSError) as e:
@@ -109,8 +109,10 @@ class Deduplicator:
                 self.size_to_files[file_size] = []
             self.size_to_files[file_size].append(file_path)
             
-            # Compute full hash if requested or if size collision detected
-            if compute_full_hash or len(self.size_to_files[file_size]) > 1:
+            # Compute full hash if requested
+            # Note: We skip computing on size collision because find_duplicates()
+            # will do it for all grouped files efficiently in one pass.
+            if compute_full_hash:
                 full_hash = FileHasher.compute_hash(file_path)
                 if full_hash not in self.hash_to_files:
                     self.hash_to_files[full_hash] = []
