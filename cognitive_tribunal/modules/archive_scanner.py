@@ -19,6 +19,11 @@ class ArchiveScanner:
     Supports local file systems, network drives, and common cloud storage mounts.
     """
     
+    # Sensitive system directories that should not be scanned
+    UNSAFE_SYSTEM_DIRS = {
+        '/etc', '/proc', '/sys', '/dev', '/boot', '/root', '/bin', '/sbin', '/lib', '/lib64', '/var', '/usr'
+    }
+
     def __init__(self, exclude_patterns: Optional[List[str]] = None):
         """
         Initialize the archive scanner.
@@ -58,6 +63,22 @@ class ArchiveScanner:
                 return True
         
         return False
+
+    def is_unsafe_path(self, path: Path) -> bool:
+        """Check if path is a sensitive system directory."""
+        resolved_path = path.resolve()
+
+        # Block root directory scan
+        if str(resolved_path) == '/':
+            return True
+
+        # Block specific system directories and their children
+        for unsafe in self.UNSAFE_SYSTEM_DIRS:
+            unsafe_path = Path(unsafe).resolve()
+            # Check if it is the unsafe path or inside it
+            if resolved_path == unsafe_path or unsafe_path in resolved_path.parents:
+                return True
+        return False
     
     def scan_directory(self, root_path: str, recursive: bool = True, max_depth: Optional[int] = None) -> Dict:
         """
@@ -78,6 +99,9 @@ class ArchiveScanner:
         
         if not root.is_dir():
             return {'error': f"Path is not a directory: {root_path}"}
+
+        if self.is_unsafe_path(root):
+            return {'error': f"Unsafe directory: {root_path} is a restricted system directory."}
         
         print(f"Scanning directory: {root}")
         self.scanned_files = []
