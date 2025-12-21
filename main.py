@@ -21,6 +21,7 @@ from cognitive_tribunal.modules.web_bookmark_analyzer import WebBookmarkAnalyzer
 from cognitive_tribunal.outputs.inventory import InventoryGenerator
 from cognitive_tribunal.outputs.knowledge_graph import KnowledgeGraphGenerator
 from cognitive_tribunal.outputs.triage_report import TriageReportGenerator
+from cognitive_tribunal.utils.ui import UI
 
 
 def main():
@@ -68,10 +69,7 @@ Examples:
     if not (args.all or args.scan_archives or args.ai_conversations or args.personal_repos or args.org_repos or args.web_bookmarks):
         parser.error('At least one module must be specified')
     
-    print("=" * 70)
-    print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
-    print("Comprehensive Archaeological Dig Tool")
-    print("=" * 70)
+    UI.header("COGNITIVE ARCHAEOLOGY TRIBUNAL", "Comprehensive Archaeological Dig Tool")
     print()
     
     # Create output directory
@@ -83,8 +81,7 @@ Examples:
     
     # Module 1: Archive Scanner
     if args.scan_archives:
-        print("\n[1/4] Running Archive Scanner...")
-        print("-" * 70)
+        UI.section("[1/4] Running Archive Scanner...")
         
         scanner = ArchiveScanner()
         paths = [p.strip() for p in args.scan_archives.split(',')]
@@ -101,12 +98,11 @@ Examples:
         with open(output_dir / 'archives.json', 'w') as f:
             json.dump(archive_results, f, indent=2)
         
-        print(f"✓ Archive scan complete. Found {archive_results.get('stats', {}).get('total_files', 0)} files")
+        UI.success(f"Archive scan complete. Found {archive_results.get('stats', {}).get('total_files', 0)} files")
     
     # Module 2: AI Context Aggregator
     if args.ai_conversations:
-        print("\n[2/4] Running AI Context Aggregator...")
-        print("-" * 70)
+        UI.section("[2/4] Running AI Context Aggregator...")
         
         aggregator = AIContextAggregator()
         ai_results = aggregator.load_chatgpt_export(args.ai_conversations)
@@ -117,12 +113,11 @@ Examples:
         with open(output_dir / 'ai_conversations.json', 'w') as f:
             json.dump(results['ai_conversations'], f, indent=2)
         
-        print(f"✓ AI context aggregation complete. Loaded {ai_results.get('loaded_count', 0)} conversations")
+        UI.success(f"AI context aggregation complete. Loaded {ai_results.get('loaded_count', 0)} conversations")
     
     # Module 3: Personal Repo Analyzer
     if args.personal_repos:
-        print("\n[3/4] Running Personal Repo Analyzer...")
-        print("-" * 70)
+        UI.section("[3/4] Running Personal Repo Analyzer...")
         
         try:
             analyzer = PersonalRepoAnalyzer(args.github_token)
@@ -134,14 +129,13 @@ Examples:
             with open(output_dir / 'personal_repos.json', 'w') as f:
                 json.dump(repo_results, f, indent=2)
             
-            print(f"✓ Personal repo analysis complete. Analyzed {repo_results.get('stats', {}).get('total_repos', 0)} repositories")
+            UI.success(f"Personal repo analysis complete. Analyzed {repo_results.get('stats', {}).get('total_repos', 0)} repositories")
         except Exception as e:
-            print(f"✗ Error analyzing personal repos: {e}")
+            UI.error(f"Error analyzing personal repos: {e}")
     
     # Module 4: Org Repo Analyzer
     if args.org_repos:
-        print("\n[4/4] Running Org Repo Analyzer...")
-        print("-" * 70)
+        UI.section("[4/4] Running Org Repo Analyzer...")
         
         try:
             analyzer = OrgRepoAnalyzer(args.github_token)
@@ -153,14 +147,13 @@ Examples:
             with open(output_dir / 'org_repos.json', 'w') as f:
                 json.dump(org_results, f, indent=2)
             
-            print(f"✓ Org repo analysis complete. Analyzed {org_results.get('stats', {}).get('total_repos', 0)} repositories")
+            UI.success(f"Org repo analysis complete. Analyzed {org_results.get('stats', {}).get('total_repos', 0)} repositories")
         except Exception as e:
-            print(f"✗ Error analyzing org repos: {e}")
+            UI.error(f"Error analyzing org repos: {e}")
     
     # Module 5: Web Bookmark Analyzer
     if args.web_bookmarks:
-        print("\n[5/5] Running Web Bookmark Analyzer...")
-        print("-" * 70)
+        UI.section("[5/5] Running Web Bookmark Analyzer...")
 
         analyzer = WebBookmarkAnalyzer()
         bookmark_results = analyzer.analyze_bookmarks(args.web_bookmarks)
@@ -171,12 +164,10 @@ Examples:
         with open(output_dir / 'web_bookmarks.json', 'w') as f:
             json.dump(bookmark_results, f, indent=2)
 
-        print(f"✓ Web bookmark analysis complete. Found {bookmark_results.get('stats', {}).get('total_bookmarks', 0)} bookmarks")
+        UI.success(f"Web bookmark analysis complete. Found {bookmark_results.get('stats', {}).get('total_bookmarks', 0)} bookmarks")
 
     # Generate unified outputs
-    print("\n" + "=" * 70)
-    print("GENERATING OUTPUTS")
-    print("=" * 70)
+    UI.section("GENERATING OUTPUTS")
     
     # Unified Inventory
     if not args.no_inventory:
