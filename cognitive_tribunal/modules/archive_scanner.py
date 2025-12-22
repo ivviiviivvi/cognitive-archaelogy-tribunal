@@ -19,6 +19,16 @@ class ArchiveScanner:
     Supports local file systems, network drives, and common cloud storage mounts.
     """
     
+    # Sensitive system directories that should not be scanned
+    UNSAFE_SYSTEM_DIRS = [
+        '/etc',
+        '/proc',
+        '/sys',
+        '/dev',
+        '/boot',
+        '/root',
+    ]
+
     def __init__(self, exclude_patterns: Optional[List[str]] = None):
         """
         Initialize the archive scanner.
@@ -47,6 +57,9 @@ class ArchiveScanner:
     
     def should_exclude(self, path: Path) -> bool:
         """Check if a path should be excluded."""
+        if self.is_unsafe_path(path):
+            return True
+
         path_str = str(path)
         
         for pattern in self.exclude_patterns:
@@ -59,6 +72,24 @@ class ArchiveScanner:
         
         return False
     
+    def is_unsafe_path(self, path: Path) -> bool:
+        """
+        Check if a path is considered unsafe to scan (e.g. system directories).
+
+        Args:
+            path: Path to check
+
+        Returns:
+            True if path is unsafe, False otherwise
+        """
+        path_str = str(path.resolve())
+
+        for unsafe_dir in self.UNSAFE_SYSTEM_DIRS:
+            if path_str == unsafe_dir or path_str.startswith(f"{unsafe_dir}/"):
+                return True
+
+        return False
+
     def scan_directory(self, root_path: str, recursive: bool = True, max_depth: Optional[int] = None) -> Dict:
         """
         Scan a directory and classify all files.
@@ -79,6 +110,9 @@ class ArchiveScanner:
         if not root.is_dir():
             return {'error': f"Path is not a directory: {root_path}"}
         
+        if self.is_unsafe_path(root):
+            return {'error': f"Scanning unsafe system directory blocked: {root_path}"}
+
         print(f"Scanning directory: {root}")
         self.scanned_files = []
         self.deduplicator = Deduplicator()
