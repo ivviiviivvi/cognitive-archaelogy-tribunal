@@ -67,7 +67,8 @@ class FileHasher:
         try:
             with open(file_path, 'rb') as f:
                 # Read in chunks to handle large files
-                for chunk in iter(lambda: f.read(8192), b''):
+                # Using 64KB buffer size for better I/O performance
+                for chunk in iter(lambda: f.read(65536), b''):
                     hash_func.update(chunk)
             return hash_func.hexdigest()
         except (IOError, OSError) as e:
