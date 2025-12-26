@@ -19,6 +19,12 @@ class ArchiveScanner:
     Supports local file systems, network drives, and common cloud storage mounts.
     """
     
+    # Critical system paths that should be blocked from scanning
+    UNSAFE_PATHS = [
+        '/proc', '/sys', '/dev', '/run', '/var/run', '/etc', '/boot',
+        'C:\\Windows', 'C:\\Program Files', 'C:\\Program Files (x86)'
+    ]
+
     def __init__(self, exclude_patterns: Optional[List[str]] = None):
         """
         Initialize the archive scanner.
@@ -59,6 +65,14 @@ class ArchiveScanner:
         
         return False
     
+    def is_unsafe_path(self, path: Path) -> bool:
+        """Check if path is a known sensitive system directory."""
+        path_str = str(path.resolve())
+        for unsafe in self.UNSAFE_PATHS:
+            if path_str == unsafe or path_str.startswith(unsafe + os.sep):
+                return True
+        return False
+
     def scan_directory(self, root_path: str, recursive: bool = True, max_depth: Optional[int] = None) -> Dict:
         """
         Scan a directory and classify all files.
@@ -73,6 +87,9 @@ class ArchiveScanner:
         """
         root = Path(root_path).resolve()
         
+        if self.is_unsafe_path(root):
+            return {'error': f"Unsafe path blocked: {root_path}"}
+
         if not root.exists():
             return {'error': f"Path does not exist: {root_path}"}
         
@@ -103,6 +120,10 @@ class ArchiveScanner:
                 if self.should_exclude(item):
                     continue
                 
+                # Security: prevent symlink traversal
+                if item.is_symlink():
+                    continue
+
                 if item.is_file():
                     self._process_file(item)
                 elif item.is_dir() and recursive:
