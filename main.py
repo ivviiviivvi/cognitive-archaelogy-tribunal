@@ -21,6 +21,9 @@ from cognitive_tribunal.modules.web_bookmark_analyzer import WebBookmarkAnalyzer
 from cognitive_tribunal.outputs.inventory import InventoryGenerator
 from cognitive_tribunal.outputs.knowledge_graph import KnowledgeGraphGenerator
 from cognitive_tribunal.outputs.triage_report import TriageReportGenerator
+from cognitive_tribunal.utils.ui import (
+    print_header, print_step, print_success, print_error, print_section
+)
 
 
 def main():
@@ -66,13 +69,18 @@ Examples:
     
     # Validate arguments
     if not (args.all or args.scan_archives or args.ai_conversations or args.personal_repos or args.org_repos or args.web_bookmarks):
-        parser.error('At least one module must be specified')
+        # Instead of generic error, print welcome and help
+        print_header(
+            "COGNITIVE ARCHAEOLOGY TRIBUNAL",
+            "Comprehensive Archaeological Dig Tool"
+        )
+        parser.print_help()
+        sys.exit(1)
     
-    print("=" * 70)
-    print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
-    print("Comprehensive Archaeological Dig Tool")
-    print("=" * 70)
-    print()
+    print_header(
+        "COGNITIVE ARCHAEOLOGY TRIBUNAL",
+        "Comprehensive Archaeological Dig Tool"
+    )
     
     # Create output directory
     output_dir = Path(args.output_dir)
@@ -83,8 +91,7 @@ Examples:
     
     # Module 1: Archive Scanner
     if args.scan_archives:
-        print("\n[1/4] Running Archive Scanner...")
-        print("-" * 70)
+        print_step(1, 4, "Running Archive Scanner...")
         
         scanner = ArchiveScanner()
         paths = [p.strip() for p in args.scan_archives.split(',')]
@@ -101,12 +108,11 @@ Examples:
         with open(output_dir / 'archives.json', 'w') as f:
             json.dump(archive_results, f, indent=2)
         
-        print(f"✓ Archive scan complete. Found {archive_results.get('stats', {}).get('total_files', 0)} files")
+        print_success(f"Archive scan complete. Found {archive_results.get('stats', {}).get('total_files', 0)} files")
     
     # Module 2: AI Context Aggregator
     if args.ai_conversations:
-        print("\n[2/4] Running AI Context Aggregator...")
-        print("-" * 70)
+        print_step(2, 4, "Running AI Context Aggregator...")
         
         aggregator = AIContextAggregator()
         ai_results = aggregator.load_chatgpt_export(args.ai_conversations)
@@ -117,12 +123,11 @@ Examples:
         with open(output_dir / 'ai_conversations.json', 'w') as f:
             json.dump(results['ai_conversations'], f, indent=2)
         
-        print(f"✓ AI context aggregation complete. Loaded {ai_results.get('loaded_count', 0)} conversations")
+        print_success(f"AI context aggregation complete. Loaded {ai_results.get('loaded_count', 0)} conversations")
     
     # Module 3: Personal Repo Analyzer
     if args.personal_repos:
-        print("\n[3/4] Running Personal Repo Analyzer...")
-        print("-" * 70)
+        print_step(3, 4, "Running Personal Repo Analyzer...")
         
         try:
             analyzer = PersonalRepoAnalyzer(args.github_token)
@@ -140,8 +145,7 @@ Examples:
     
     # Module 4: Org Repo Analyzer
     if args.org_repos:
-        print("\n[4/4] Running Org Repo Analyzer...")
-        print("-" * 70)
+        print_step(4, 4, "Running Org Repo Analyzer...")
         
         try:
             analyzer = OrgRepoAnalyzer(args.github_token)
@@ -159,8 +163,7 @@ Examples:
     
     # Module 5: Web Bookmark Analyzer
     if args.web_bookmarks:
-        print("\n[5/5] Running Web Bookmark Analyzer...")
-        print("-" * 70)
+        print_step(5, 5, "Running Web Bookmark Analyzer...")
 
         analyzer = WebBookmarkAnalyzer()
         bookmark_results = analyzer.analyze_bookmarks(args.web_bookmarks)
@@ -180,7 +183,7 @@ Examples:
     
     # Unified Inventory
     if not args.no_inventory:
-        print("\nGenerating unified inventory...")
+        print("Generating unified inventory...")
         inventory = InventoryGenerator()
         
         if 'archives' in results:
@@ -198,22 +201,22 @@ Examples:
             pass
         
         inventory.save_to_file(str(output_dir / 'inventory.json'))
-        print("✓ Inventory saved")
+        print_success("Inventory saved")
     
     # Knowledge Graph
     if not args.no_graph:
-        print("\nGenerating knowledge graph...")
+        print("Generating knowledge graph...")
         graph = KnowledgeGraphGenerator()
         
         if not args.no_inventory:
             graph.build_from_inventory(inventory.get_inventory())
             graph.save_to_file(str(output_dir / 'knowledge_graph.json'))
             graph.export_to_cytoscape(str(output_dir / 'knowledge_graph_cytoscape.json'))
-            print("✓ Knowledge graph saved")
+            print_success("Knowledge graph saved")
     
     # Triage Report
     if not args.no_triage:
-        print("\nGenerating triage report...")
+        print("Generating triage report...")
         triage = TriageReportGenerator()
         
         if 'archives' in results:
@@ -236,12 +239,10 @@ Examples:
         with open(output_dir / 'triage_report.txt', 'w') as f:
             f.write(triage.generate_text_report())
         
-        print("✓ Triage report saved")
+        print_success("Triage report saved")
     
     # Final summary
-    print("\n" + "=" * 70)
-    print("COMPLETE!")
-    print("=" * 70)
+    print_section("COMPLETE!")
     print(f"\nAll outputs saved to: {output_dir.absolute()}")
     print("\nGenerated files:")
     for file in sorted(output_dir.glob('*')):
