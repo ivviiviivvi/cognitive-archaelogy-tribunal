@@ -56,7 +56,7 @@ Examples:
     parser.add_argument('--web-bookmarks', metavar='PATH', help='Analyze web bookmarks from an export file')
     
     # Configuration
-    parser.add_argument('--github-token', help='GitHub personal access token (or use GITHUB_TOKEN env var)')
+    parser.add_argument('--github-token', help='[INSECURE/DEPRECATED] GitHub personal access token. Use GITHUB_TOKEN env var instead.')
     parser.add_argument('--output-dir', default='./output', help='Output directory (default: ./output)')
     parser.add_argument('--no-inventory', action='store_true', help='Skip inventory generation')
     parser.add_argument('--no-graph', action='store_true', help='Skip knowledge graph generation')
@@ -67,6 +67,13 @@ Examples:
     # Validate arguments
     if not (args.all or args.scan_archives or args.ai_conversations or args.personal_repos or args.org_repos or args.web_bookmarks):
         parser.error('At least one module must be specified')
+
+    if args.github_token:
+        print("\n" + "!" * 70)
+        print("WARNING: Using --github-token is insecure and deprecated.")
+        print("Your token may be visible in process listings and shell history.")
+        print("Please use the GITHUB_TOKEN environment variable instead.")
+        print("!" * 70 + "\n")
     
     print("=" * 70)
     print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
