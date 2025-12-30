@@ -4,15 +4,15 @@ Cognitive Archaeology Tribunal - Main CLI
 Command-line interface for running the complete audit suite.
 """
 
-import os
 import sys
 import argparse
+import json
 from pathlib import Path
-from typing import Optional
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent))
 
+# pylint: disable=C0413
 from cognitive_tribunal.modules.archive_scanner import ArchiveScanner
 from cognitive_tribunal.modules.ai_context_aggregator import AIContextAggregator
 from cognitive_tribunal.modules.personal_repo_analyzer import PersonalRepoAnalyzer
@@ -22,6 +22,7 @@ from cognitive_tribunal.outputs.inventory import InventoryGenerator
 from cognitive_tribunal.outputs.knowledge_graph import KnowledgeGraphGenerator
 from cognitive_tribunal.outputs.triage_report import TriageReportGenerator
 
+# pylint: disable=C0301,C0303,R0912,R0914,R0915,W0718
 
 def main():
     """Main entry point for the CLI."""
@@ -35,15 +36,6 @@ Examples:
   
   # Scan archives only
   python main.py --scan-archives /path/to/archives --output-dir ./output
-  
-  # Analyze personal repos
-  python main.py --personal-repos username --output-dir ./output
-  
-  # Analyze org repos
-  python main.py --org-repos orgname --output-dir ./output
-  
-  # Load AI conversations
-  python main.py --ai-conversations /path/to/chatgpt/export --output-dir ./output
         """
     )
     
@@ -64,125 +56,102 @@ Examples:
     
     args = parser.parse_args()
     
-    # Validate arguments
     if not (args.all or args.scan_archives or args.ai_conversations or args.personal_repos or args.org_repos or args.web_bookmarks):
-        parser.error('At least one module must be specified')
+        parser.print_help()
+        sys.exit(1)
     
-    print("=" * 70)
+    # ANSI color codes for visual polish
+    # pylint: disable=C0103
+    use_colors = sys.stdout.isatty()
+    BOLD = "\033[1m" if use_colors else ""
+    GREEN = "\033[92m" if use_colors else ""
+    RED = "\033[91m" if use_colors else ""
+    RESET = "\033[0m" if use_colors else ""
+
+    print(f"\n{BOLD}" + "=" * 70)
     print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
-    print("Comprehensive Archaeological Dig Tool")
-    print("=" * 70)
+    print(f"Comprehensive Archaeological Dig Tool{RESET}")
+    print(f"{BOLD}" + "=" * 70 + f"{RESET}")
     print()
     
     # Create output directory
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    # Initialize results storage
     results = {}
     
-    # Module 1: Archive Scanner
     if args.scan_archives:
-        print("\n[1/4] Running Archive Scanner...")
+        print("\n[1/5] Running Archive Scanner...")
         print("-" * 70)
-        
         scanner = ArchiveScanner()
         paths = [p.strip() for p in args.scan_archives.split(',')]
-        
         if len(paths) == 1:
             archive_results = scanner.scan_directory(paths[0])
         else:
             archive_results = scanner.scan_multiple_locations(paths)
-        
         results['archives'] = archive_results
         
-        # Save module results
-        import json
-        with open(output_dir / 'archives.json', 'w') as f:
+        with open(output_dir / 'archives.json', 'w', encoding='utf-8') as f:
             json.dump(archive_results, f, indent=2)
-        
-        print(f"✓ Archive scan complete. Found {archive_results.get('stats', {}).get('total_files', 0)} files")
+        print(f"{GREEN}✓ Archive scan complete. Found {archive_results.get('stats', {}).get('total_files', 0)} files{RESET}")
     
-    # Module 2: AI Context Aggregator
     if args.ai_conversations:
-        print("\n[2/4] Running AI Context Aggregator...")
+        print("\n[2/5] Running AI Context Aggregator...")
         print("-" * 70)
-        
         aggregator = AIContextAggregator()
         ai_results = aggregator.load_chatgpt_export(args.ai_conversations)
         results['ai_conversations'] = aggregator.get_results()
         
-        # Save module results
-        import json
-        with open(output_dir / 'ai_conversations.json', 'w') as f:
+        with open(output_dir / 'ai_conversations.json', 'w', encoding='utf-8') as f:
             json.dump(results['ai_conversations'], f, indent=2)
-        
-        print(f"✓ AI context aggregation complete. Loaded {ai_results.get('loaded_count', 0)} conversations")
+        print(f"{GREEN}✓ AI context aggregation complete. Loaded {ai_results.get('loaded_count', 0)} conversations{RESET}")
     
-    # Module 3: Personal Repo Analyzer
     if args.personal_repos:
-        print("\n[3/4] Running Personal Repo Analyzer...")
+        print("\n[3/5] Running Personal Repo Analyzer...")
         print("-" * 70)
-        
         try:
             analyzer = PersonalRepoAnalyzer(args.github_token)
             repo_results = analyzer.analyze_user_repos(args.personal_repos)
             results['personal_repos'] = repo_results
             
-            # Save module results
-            import json
-            with open(output_dir / 'personal_repos.json', 'w') as f:
+            with open(output_dir / 'personal_repos.json', 'w', encoding='utf-8') as f:
                 json.dump(repo_results, f, indent=2)
-            
-            print(f"✓ Personal repo analysis complete. Analyzed {repo_results.get('stats', {}).get('total_repos', 0)} repositories")
+            print(f"{GREEN}✓ Personal repo analysis complete. Analyzed {repo_results.get('stats', {}).get('total_repos', 0)} repositories{RESET}")
         except Exception as e:
-            print(f"✗ Error analyzing personal repos: {e}")
+            print(f"{RED}✗ Error analyzing personal repos: {e}{RESET}")
     
-    # Module 4: Org Repo Analyzer
     if args.org_repos:
-        print("\n[4/4] Running Org Repo Analyzer...")
+        print("\n[4/5] Running Org Repo Analyzer...")
         print("-" * 70)
-        
         try:
             analyzer = OrgRepoAnalyzer(args.github_token)
             org_results = analyzer.analyze_org_repos(args.org_repos)
             results['org_repos'] = org_results
             
-            # Save module results
-            import json
-            with open(output_dir / 'org_repos.json', 'w') as f:
+            with open(output_dir / 'org_repos.json', 'w', encoding='utf-8') as f:
                 json.dump(org_results, f, indent=2)
-            
-            print(f"✓ Org repo analysis complete. Analyzed {org_results.get('stats', {}).get('total_repos', 0)} repositories")
+            print(f"{GREEN}✓ Org repo analysis complete. Analyzed {org_results.get('stats', {}).get('total_repos', 0)} repositories{RESET}")
         except Exception as e:
-            print(f"✗ Error analyzing org repos: {e}")
-    
-    # Module 5: Web Bookmark Analyzer
+            print(f"{RED}✗ Error analyzing org repos: {e}{RESET}")
+
     if args.web_bookmarks:
         print("\n[5/5] Running Web Bookmark Analyzer...")
         print("-" * 70)
-
         analyzer = WebBookmarkAnalyzer()
         bookmark_results = analyzer.analyze_bookmarks(args.web_bookmarks)
         results['web_bookmarks'] = bookmark_results
 
-        # Save module results
-        import json
-        with open(output_dir / 'web_bookmarks.json', 'w') as f:
+        with open(output_dir / 'web_bookmarks.json', 'w', encoding='utf-8') as f:
             json.dump(bookmark_results, f, indent=2)
+        print(f"{GREEN}✓ Web bookmark analysis complete. Found {bookmark_results.get('stats', {}).get('total_bookmarks', 0)} bookmarks{RESET}")
 
-        print(f"✓ Web bookmark analysis complete. Found {bookmark_results.get('stats', {}).get('total_bookmarks', 0)} bookmarks")
-
-    # Generate unified outputs
-    print("\n" + "=" * 70)
+    print(f"\n{BOLD}" + "=" * 70)
     print("GENERATING OUTPUTS")
-    print("=" * 70)
+    print("=" * 70 + f"{RESET}")
     
-    # Unified Inventory
     if not args.no_inventory:
         print("\nGenerating unified inventory...")
         inventory = InventoryGenerator()
-        
         if 'archives' in results:
             inventory.add_archive_results(results['archives'])
         if 'ai_conversations' in results:
@@ -191,31 +160,21 @@ Examples:
             inventory.add_personal_repo_results(results['personal_repos'])
         if 'org_repos' in results:
             inventory.add_org_repo_results(results['org_repos'])
-        if 'web_bookmarks' in results:
-            # This method needs to be added to the InventoryGenerator class
-            # For now, we'll just conceptually add it.
-            # inventory.add_web_bookmark_results(results['web_bookmarks'])
-            pass
-        
         inventory.save_to_file(str(output_dir / 'inventory.json'))
-        print("✓ Inventory saved")
+        print(f"{GREEN}✓ Inventory saved{RESET}")
     
-    # Knowledge Graph
     if not args.no_graph:
         print("\nGenerating knowledge graph...")
         graph = KnowledgeGraphGenerator()
-        
         if not args.no_inventory:
             graph.build_from_inventory(inventory.get_inventory())
             graph.save_to_file(str(output_dir / 'knowledge_graph.json'))
             graph.export_to_cytoscape(str(output_dir / 'knowledge_graph_cytoscape.json'))
-            print("✓ Knowledge graph saved")
+            print(f"{GREEN}✓ Knowledge graph saved{RESET}")
     
-    # Triage Report
     if not args.no_triage:
         print("\nGenerating triage report...")
         triage = TriageReportGenerator()
-        
         if 'archives' in results:
             triage.add_archive_triage(results['archives'])
         if 'ai_conversations' in results:
@@ -224,25 +183,15 @@ Examples:
             triage.add_personal_repo_triage(results['personal_repos'])
         if 'org_repos' in results:
             triage.add_org_repo_triage(results['org_repos'])
-        if 'web_bookmarks' in results:
-            # This method needs to be added to the TriageReportGenerator class
-            # For now, we'll just conceptually add it.
-            # triage.add_web_bookmark_triage(results['web_bookmarks'])
-            pass
-        
         triage.save_to_file(str(output_dir / 'triage_report.json'))
-        
-        # Also save as text
-        with open(output_dir / 'triage_report.txt', 'w') as f:
+        with open(output_dir / 'triage_report.txt', 'w', encoding='utf-8') as f:
             f.write(triage.generate_text_report())
-        
-        print("✓ Triage report saved")
+        print(f"{GREEN}✓ Triage report saved{RESET}")
     
-    # Final summary
-    print("\n" + "=" * 70)
+    print(f"\n{BOLD}" + "=" * 70)
     print("COMPLETE!")
-    print("=" * 70)
-    print(f"\nAll outputs saved to: {output_dir.absolute()}")
+    print("=" * 70 + f"{RESET}")
+    print(f"\n{BOLD}All outputs saved to: {output_dir.absolute()}{RESET}")
     print("\nGenerated files:")
     for file in sorted(output_dir.glob('*')):
         print(f"  - {file.name}")
