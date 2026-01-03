@@ -6,6 +6,9 @@ Provides GitHub API wrapper and repository analysis functions.
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 try:
     from github import Github, Repository, GithubException
@@ -53,7 +56,8 @@ class GitHubClient:
             
             return list(user.get_repos())
         except GithubException as e:
-            print(f"Error fetching user repos: {e}")
+            print("Error fetching user repos: See logs for details")
+            logger.error(f"Error fetching user repos: {e}", exc_info=True)
             return []
     
     def get_org_repos(self, org_name: str) -> List[RepoType]:
@@ -70,7 +74,8 @@ class GitHubClient:
             org = self.client.get_organization(org_name)
             return list(org.get_repos())
         except GithubException as e:
-            print(f"Error fetching org repos: {e}")
+            print("Error fetching org repos: See logs for details")
+            logger.error(f"Error fetching org repos: {e}", exc_info=True)
             return []
     
     def get_repo_details(self, repo: RepoType) -> Dict:
@@ -172,7 +177,8 @@ class GitHubClient:
             
             return commit_list
         except Exception as e:
-            print(f"Error fetching commits: {e}")
+            print("Error fetching commits: See logs for details")
+            logger.error(f"Error fetching commits: {e}", exc_info=True)
             return []
     
     def get_repo_dependencies(self, repo: RepoType) -> Dict[str, List[str]]:

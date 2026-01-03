@@ -7,6 +7,7 @@ Command-line interface for running the complete audit suite.
 import os
 import sys
 import argparse
+import logging
 from pathlib import Path
 from typing import Optional
 
@@ -78,6 +79,15 @@ Examples:
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     
+    # Configure logging
+    log_file = output_dir / 'audit.log'
+    logging.basicConfig(
+        filename=str(log_file),
+        level=logging.ERROR,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+    logger = logging.getLogger('cognitive_tribunal')
+
     # Initialize results storage
     results = {}
     
@@ -136,7 +146,8 @@ Examples:
             
             print(f"✓ Personal repo analysis complete. Analyzed {repo_results.get('stats', {}).get('total_repos', 0)} repositories")
         except Exception as e:
-            print(f"✗ Error analyzing personal repos: {e}")
+            print("✗ Error analyzing personal repos. See logs for details.")
+            logger.error(f"Error analyzing personal repos: {e}", exc_info=True)
     
     # Module 4: Org Repo Analyzer
     if args.org_repos:
@@ -155,7 +166,8 @@ Examples:
             
             print(f"✓ Org repo analysis complete. Analyzed {org_results.get('stats', {}).get('total_repos', 0)} repositories")
         except Exception as e:
-            print(f"✗ Error analyzing org repos: {e}")
+            print("✗ Error analyzing org repos. See logs for details.")
+            logger.error(f"Error analyzing org repos: {e}", exc_info=True)
     
     # Module 5: Web Bookmark Analyzer
     if args.web_bookmarks:
