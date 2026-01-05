@@ -66,7 +66,40 @@ Examples:
     
     # Validate arguments
     if not (args.all or args.scan_archives or args.ai_conversations or args.personal_repos or args.org_repos or args.web_bookmarks):
-        parser.error('At least one module must be specified')
+        try:
+            from rich.console import Console
+            from rich.panel import Panel
+            from rich.text import Text
+            from rich.align import Align
+
+            console = Console()
+
+            title = Text("COGNITIVE ARCHAEOLOGY TRIBUNAL", style="bold cyan")
+            subtitle = Text("Comprehensive Digital Archaeology Tool", style="italic white")
+
+            content = Text()
+            content.append("\nWelcome, Archaeologist. Select a module to begin digging:\n\n", style="bold")
+
+            content.append("📂 Scan Archives\n", style="yellow bold")
+            content.append("   python main.py --scan-archives /path/to/archives\n\n")
+
+            content.append("💻 Analyze Repos\n", style="green bold")
+            content.append("   python main.py --personal-repos username\n\n")
+
+            content.append("🤖 AI Context\n", style="magenta bold")
+            content.append("   python main.py --ai-conversations /path/to/export\n")
+
+            console.print(Panel(
+                Align.center(content),
+                title=title,
+                subtitle=subtitle,
+                border_style="blue",
+                padding=(1, 2),
+                expand=False
+            ))
+            parser.exit(status=0)
+        except (ImportError, Exception):
+            parser.error('At least one module must be specified')
     
     print("=" * 70)
     print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
