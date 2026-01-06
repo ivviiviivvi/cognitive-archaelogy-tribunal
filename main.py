@@ -66,7 +66,43 @@ Examples:
     
     # Validate arguments
     if not (args.all or args.scan_archives or args.ai_conversations or args.personal_repos or args.org_repos or args.web_bookmarks):
-        parser.error('At least one module must be specified')
+        # UX: specific rich panel for empty state
+        try:
+            from rich.console import Console
+            from rich.panel import Panel
+            from rich.markdown import Markdown
+
+            console = Console()
+            welcome_text = """
+# Cognitive Archaeology Tribunal
+
+Welcome to the digital excavation tool. No module was specified.
+
+## Available Modules
+
+- **Archive Scanner**: `--scan-archives <path>`
+- **AI Context**: `--ai-conversations <path>`
+- **GitHub Analysis**: `--personal-repos <user>` or `--org-repos <org>`
+- **Web Bookmarks**: `--web-bookmarks <path>`
+
+## Quick Start
+
+Run the full suite:
+`python main.py --all --output-dir ./audit_results`
+
+View help:
+`python main.py --help`
+"""
+            console.print(Panel(
+                Markdown(welcome_text.strip()),
+                title="Dig Site Initialized",
+                subtitle="Ready for excavation",
+                border_style="green"
+            ))
+            sys.exit(0)
+        except ImportError:
+            parser.print_help()
+            sys.exit(0)
     
     print("=" * 70)
     print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
