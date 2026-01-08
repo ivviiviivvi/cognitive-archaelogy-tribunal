@@ -10,6 +10,14 @@ import argparse
 from pathlib import Path
 from typing import Optional
 
+try:
+    from rich.console import Console
+    from rich.panel import Panel
+    from rich.markdown import Markdown
+    RICH_AVAILABLE = True
+except ImportError:
+    RICH_AVAILABLE = False
+
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent))
 
@@ -21,6 +29,44 @@ from cognitive_tribunal.modules.web_bookmark_analyzer import WebBookmarkAnalyzer
 from cognitive_tribunal.outputs.inventory import InventoryGenerator
 from cognitive_tribunal.outputs.knowledge_graph import KnowledgeGraphGenerator
 from cognitive_tribunal.outputs.triage_report import TriageReportGenerator
+
+
+def print_welcome():
+    """Displays a welcome screen when no arguments are provided."""
+    if RICH_AVAILABLE:
+        console = Console()
+
+        content = """
+Welcome! This tool helps you audit and organize your digital footprint.
+
+**Available Modules:**
+- 🗂️  **Archive Scanner**: Audit files and find duplicates
+- 🤖 **AI Context**: Analyze ChatGPT conversations
+- 👤 **Personal Repos**: Audit GitHub repositories
+- 🏢 **Org Repos**: Analyze organization repositories
+- 🔖 **Web Bookmarks**: Parse and analyze bookmarks
+
+**Quick Start:**
+`python main.py --scan-archives ./data --output-dir ./output`
+
+*Run with `--help` for full usage information.*
+"""
+        console.print(Panel(
+            Markdown(content.strip()),
+            title="[bold cyan]Cognitive Archaeology Tribunal[/bold cyan]",
+            subtitle="[italic]Digital Archaeology & Organization Tool[/italic]",
+            border_style="cyan",
+            padding=(1, 2)
+        ))
+    else:
+        print("=" * 70)
+        print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
+        print("Comprehensive Archaeological Dig Tool")
+        print("=" * 70)
+        print("\nNo modules selected. Please choose a task:")
+        print("  --scan-archives PATH   : Scan directories")
+        print("  --personal-repos USER  : Analyze GitHub repos")
+        print("  --help                 : Show full options")
 
 
 def main():
@@ -66,7 +112,8 @@ Examples:
     
     # Validate arguments
     if not (args.all or args.scan_archives or args.ai_conversations or args.personal_repos or args.org_repos or args.web_bookmarks):
-        parser.error('At least one module must be specified')
+        print_welcome()
+        sys.exit(0)
     
     print("=" * 70)
     print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
