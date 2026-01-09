@@ -66,7 +66,32 @@ Examples:
     
     # Validate arguments
     if not (args.all or args.scan_archives or args.ai_conversations or args.personal_repos or args.org_repos or args.web_bookmarks):
-        parser.error('At least one module must be specified')
+        try:
+            from rich.console import Console
+            from rich.panel import Panel
+            from rich.markdown import Markdown
+
+            console = Console()
+            welcome_text = """
+# Welcome to Cognitive Archaeology Tribunal 🏛️
+
+Your comprehensive tool for digital excavation and analysis.
+
+### Available Modules:
+* **Archive Scanner**: Dig through local directories
+* **AI Context**: Analyze ChatGPT exports
+* **Repo Analyzer**: Audit GitHub repositories
+* **Web Bookmarks**: Process bookmark exports
+
+### Quick Start:
+Run with `--help` to see all options.
+
+`python main.py --scan-archives ./my_data`
+            """
+            console.print(Panel(Markdown(welcome_text.strip()), title="Cognitive Archaeology Tribunal", subtitle="v1.0.0", border_style="blue"))
+            sys.exit(0)
+        except ImportError:
+            parser.error('At least one module must be specified')
     
     print("=" * 70)
     print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
