@@ -1,0 +1,4 @@
+## 2024-05-23 - [Unsafe Path Scanning Prevention]
+**Vulnerability:** The `ArchiveScanner` allowed scanning of arbitrary directories, including critical system roots (e.g., `/`, `/etc`, `C:\Windows`). This could lead to information disclosure or resource exhaustion (DoS) if a user accidentally or maliciously initiated a scan on the entire filesystem.
+**Learning:** Relying solely on `path.exists()` and `path.is_dir()` is insufficient for security. Applications dealing with filesystem operations must explicitly validate and restrict access to sensitive system paths, even if running as a user-level CLI tool.
+**Prevention:** Implemented an explicit `is_unsafe_path` check using a blocklist of critical system directories (`UNSAFE_PATHS_POSIX` and `UNSAFE_PATHS_NT`). This check is performed after path resolution (`resolve()`) to handle symlinks and relative paths securely, defaulting to "unsafe" (fail-secure) on any resolution errors.
