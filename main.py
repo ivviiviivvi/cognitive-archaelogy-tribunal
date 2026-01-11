@@ -13,6 +13,15 @@ from typing import Optional
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent))
 
+try:
+    from rich.console import Console
+    from rich.panel import Panel
+    from rich.text import Text
+    from rich.align import Align
+    RICH_AVAILABLE = True
+except ImportError:
+    RICH_AVAILABLE = False
+
 from cognitive_tribunal.modules.archive_scanner import ArchiveScanner
 from cognitive_tribunal.modules.ai_context_aggregator import AIContextAggregator
 from cognitive_tribunal.modules.personal_repo_analyzer import PersonalRepoAnalyzer
@@ -21,6 +30,45 @@ from cognitive_tribunal.modules.web_bookmark_analyzer import WebBookmarkAnalyzer
 from cognitive_tribunal.outputs.inventory import InventoryGenerator
 from cognitive_tribunal.outputs.knowledge_graph import KnowledgeGraphGenerator
 from cognitive_tribunal.outputs.triage_report import TriageReportGenerator
+
+
+def show_welcome():
+    """Displays a welcome panel when no arguments are provided."""
+    if not RICH_AVAILABLE:
+        print("=" * 70)
+        print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
+        print("=" * 70)
+        print("\nNo modules specified. Please use --help for usage information.")
+        return
+
+    console = Console()
+
+    title = Text("COGNITIVE ARCHAEOLOGY TRIBUNAL", style="bold cyan")
+    subtitle = Text("Digital Preservation & Audit Suite", style="italic")
+
+    content = Text()
+    content.append("\nWelcome to the Cognitive Archaeology Tribunal.\n", style="bold")
+    content.append("This tool helps you audit, archive, and analyze digital footprints.\n\n")
+
+    content.append("Quick Start Examples:\n", style="bold yellow")
+    content.append("  • Audit personal repos:  ", style="dim")
+    content.append("python main.py --personal-repos <username>\n", style="green")
+    content.append("  • Scan local archives:   ", style="dim")
+    content.append("python main.py --scan-archives <path>\n", style="green")
+    content.append("  • Process AI exports:    ", style="dim")
+    content.append("python main.py --ai-conversations <path>\n", style="green")
+    content.append("  • Full help & options:   ", style="dim")
+    content.append("python main.py --help\n", style="green")
+
+    panel = Panel(
+        Align.center(content),
+        title=title,
+        subtitle=subtitle,
+        border_style="blue",
+        padding=(1, 2)
+    )
+
+    console.print(panel)
 
 
 def main():
@@ -66,7 +114,8 @@ Examples:
     
     # Validate arguments
     if not (args.all or args.scan_archives or args.ai_conversations or args.personal_repos or args.org_repos or args.web_bookmarks):
-        parser.error('At least one module must be specified')
+        show_welcome()
+        sys.exit(0)
     
     print("=" * 70)
     print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
