@@ -4,6 +4,7 @@ Scans iCloud/Dropbox/drives with file classification and deduplication.
 """
 
 import os
+import sys
 from pathlib import Path
 from typing import Dict, List, Set, Optional
 from datetime import datetime
@@ -19,6 +20,17 @@ class ArchiveScanner:
     Supports local file systems, network drives, and common cloud storage mounts.
     """
     
+    # Platform-specific unsafe paths (lowercased for comparison)
+    UNSAFE_PATHS_POSIX = {
+        '/', '/bin', '/boot', '/dev', '/etc', '/lib', '/lib64',
+        '/proc', '/root', '/run', '/sbin', '/sys', '/usr', '/var'
+    }
+
+    UNSAFE_PATHS_NT = {
+        'c:\\windows', 'c:\\program files', 'c:\\program files (x86)',
+        'c:\\programdata', 'c:\\perflogs'
+    }
+
     def __init__(self, exclude_patterns: Optional[List[str]] = None):
         """
         Initialize the archive scanner.
@@ -59,6 +71,31 @@ class ArchiveScanner:
         
         return False
     
+    def is_unsafe_path(self, path: Path) -> bool:
+        """
+        Check if the path is a sensitive system directory.
+
+        Args:
+            path: Resolved Path object to check
+
+        Returns:
+            True if path is considered unsafe to scan
+        """
+        path_str = str(path).lower()
+
+        if sys.platform == 'win32':
+            # Check for Windows system directories
+            if any(path_str == unsafe or path_str.startswith(unsafe + '\\')
+                   for unsafe in self.UNSAFE_PATHS_NT):
+                return True
+        else:
+            # Check for POSIX system directories
+            if any(path_str == unsafe or path_str.startswith(unsafe + '/')
+                   for unsafe in self.UNSAFE_PATHS_POSIX):
+                return True
+
+        return False
+
     def scan_directory(self, root_path: str, recursive: bool = True, max_depth: Optional[int] = None) -> Dict:
         """
         Scan a directory and classify all files.
@@ -73,6 +110,9 @@ class ArchiveScanner:
         """
         root = Path(root_path).resolve()
         
+        if self.is_unsafe_path(root):
+            return {'error': f"Security risk: blocked scanning of unsafe path: {root}"}
+
         if not root.exists():
             return {'error': f"Path does not exist: {root_path}"}
         

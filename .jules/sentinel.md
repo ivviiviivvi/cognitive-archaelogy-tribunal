@@ -1,0 +1,4 @@
+## 2025-01-11 - [Path Traversal Prevention in Archive Scanner]
+**Vulnerability:** The `ArchiveScanner` module allowed scanning of any directory, including system root (`/`) and critical system folders (e.g., `/etc`, `C:\Windows`), which could be exploited for path traversal if user input is not sanitized or if the tool is run with elevated privileges.
+**Learning:** Even in CLI tools, default "allow-all" path policies are dangerous. Users might accidentally scan their entire hard drive (DoS/Performance) or a malicious script could invoke the tool to map the system.
+**Prevention:** Implemented a blocklist of unsafe system paths (`UNSAFE_PATHS_POSIX` and `UNSAFE_PATHS_NT`) and an `is_unsafe_path` check in `ArchiveScanner`. This ensures that critical system directories are protected from accidental or malicious scanning by default.
