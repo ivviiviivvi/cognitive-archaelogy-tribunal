@@ -23,6 +23,75 @@ from cognitive_tribunal.outputs.knowledge_graph import KnowledgeGraphGenerator
 from cognitive_tribunal.outputs.triage_report import TriageReportGenerator
 
 
+def print_welcome():
+    """Displays a welcome message with usage examples."""
+    try:
+        from rich.console import Console
+        from rich.panel import Panel
+        from rich.markdown import Markdown
+        from rich.theme import Theme
+
+        custom_theme = Theme({
+            "info": "cyan",
+            "warning": "yellow",
+            "danger": "bold red",
+            "success": "green",
+            "title": "bold cyan",
+            "code": "bold white on black"
+        })
+
+        console = Console(theme=custom_theme)
+
+        welcome_md = """
+# Welcome to Cognitive Archaeology Tribunal
+
+A comprehensive tool for auditing, archiving, and analyzing your digital footprint.
+
+## Available Modules
+
+* **Archive Scanner**: Audit files, find duplicates, analyze disk usage
+* **AI Context**: Aggregates ChatGPT conversations and context
+* **Repo Analyzers**: Analyze Personal and Organization GitHub repositories
+* **Web Bookmarks**: Parse and analyze bookmark exports
+
+## Quick Start Examples
+
+Run a complete audit:
+`python main.py --all --output-dir ./audit_results`
+
+Scan local archives:
+`python main.py --scan-archives ~/Documents --output-dir ./output`
+
+Analyze AI conversations:
+`python main.py --ai-conversations ./chatgpt_export --output-dir ./output`
+
+Analyze GitHub Repos:
+`python main.py --personal-repos myusername --output-dir ./output`
+
+## Need Help?
+
+Run `python main.py --help` for detailed command options.
+"""
+        console.print(Panel(
+            Markdown(welcome_md),
+            title="[bold blue]Cognitive Archaeology Tribunal[/]",
+            subtitle="[italic]Digital Preservation & Audit Suite[/]",
+            border_style="blue",
+            padding=(1, 2)
+        ))
+
+    except ImportError:
+        # Fallback for when rich is not available
+        print("=" * 70)
+        print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
+        print("Comprehensive Archaeological Dig Tool")
+        print("=" * 70)
+        print("\nNo modules specified. Use --help for usage information.")
+        print("\nQuick Examples:")
+        print("  python main.py --all --output-dir ./output")
+        print("  python main.py --scan-archives /path/to/archives")
+
+
 def main():
     """Main entry point for the CLI."""
     parser = argparse.ArgumentParser(
@@ -66,7 +135,8 @@ Examples:
     
     # Validate arguments
     if not (args.all or args.scan_archives or args.ai_conversations or args.personal_repos or args.org_repos or args.web_bookmarks):
-        parser.error('At least one module must be specified')
+        print_welcome()
+        sys.exit(0)
     
     print("=" * 70)
     print("COGNITIVE ARCHAEOLOGY TRIBUNAL")
