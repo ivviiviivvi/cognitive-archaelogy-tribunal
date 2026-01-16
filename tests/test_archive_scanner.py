@@ -3,7 +3,9 @@ Tests for Archive Scanner module.
 """
 
 import tempfile
+import os
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 from cognitive_tribunal.modules.archive_scanner import ArchiveScanner
 
@@ -124,3 +126,47 @@ def test_duplicate_detection_within_single_location():
         assert dedup_stats['total_files'] == 3
         assert dedup_stats['duplicate_groups'] == 1
         assert dedup_stats['duplicate_files'] == 1  # 2 files - 1 = 1 duplicate
+
+
+def test_security_blocks_unsafe_paths():
+    """Test that unsafe paths are blocked."""
+    scanner = ArchiveScanner()
+    scanner._scan_recursive = MagicMock()
+
+    # Test with real paths where possible, but safely.
+
+    # 1. Root "/"
+    # This assumes we are on a system where "/" exists.
+    if os.name == 'posix':
+        result = scanner.scan_directory("/")
+        assert 'error' in result
+        assert "Security risk" in result['error']
+        assert not scanner._scan_recursive.called
+
+    # 2. System Directory "/etc" (Posix)
+    if os.name == 'posix' and Path("/etc").exists():
+        result = scanner.scan_directory("/etc")
+        assert 'error' in result
+        assert "Security risk" in result['error']
+
+    # 3. Subdirectory of system dir "/etc/ssh" (if exists)
+    # We can fake it if it doesn't exist by mocking exists/is_dir
+    with patch('pathlib.Path.exists', return_value=True):
+        with patch('pathlib.Path.is_dir', return_value=True):
+            if os.name == 'posix':
+                result = scanner.scan_directory("/etc/fake_subdir")
+                assert 'error' in result
+                assert "Security risk" in result['error']
+
+
+def test_security_allows_safe_paths():
+    """Test that safe paths are allowed."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        scanner = ArchiveScanner()
+        # Create a dummy file
+        Path(temp_dir).joinpath("test.txt").touch()
+
+        result = scanner.scan_directory(temp_dir)
+
+        assert 'error' not in result
+        assert result['stats']['total_files'] == 1

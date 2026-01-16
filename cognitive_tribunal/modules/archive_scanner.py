@@ -45,6 +45,51 @@ class ArchiveScanner:
             'errors': [],
         }
     
+    # Unsafe paths that should never be scanned
+    UNSAFE_PATHS_POSIX = {
+        '/etc', '/var', '/proc', '/sys', '/usr', '/bin', '/sbin',
+        '/boot', '/dev', '/lib', '/lib64', '/run', '/srv'
+    }
+
+    UNSAFE_PATHS_NT = {
+        'Windows', 'Program Files', 'Program Files (x86)', 'ProgramData'
+    }
+
+    def is_unsafe_path(self, path: Path) -> bool:
+        """
+        Check if a path is unsafe to scan (system directories, root).
+
+        Args:
+            path: Resolved path to check
+
+        Returns:
+            True if path is unsafe, False otherwise
+        """
+        # Prevent scanning the filesystem root
+        if path == Path(path.anchor):
+            return True
+
+        # Check specific system directories
+        if os.name == 'posix':
+            for unsafe in self.UNSAFE_PATHS_POSIX:
+                # Check exact match or if path is inside unsafe directory
+                unsafe_path = Path(unsafe)
+                if path == unsafe_path or unsafe_path in path.parents:
+                    return True
+        elif os.name == 'nt':
+            # Windows checks (case-insensitive usually but let's be careful)
+            # We construct full paths based on the drive of the target path
+            drive = path.anchor
+            for unsafe in self.UNSAFE_PATHS_NT:
+                unsafe_full = Path(drive) / unsafe
+                # Simple check using string to handle potential case issues more broadly if needed,
+                # but pathlib is usually good.
+                # Note: Windows paths are case-insensitive.
+                if str(path).lower().startswith(str(unsafe_full).lower()):
+                     return True
+
+        return False
+
     def should_exclude(self, path: Path) -> bool:
         """Check if a path should be excluded."""
         path_str = str(path)
@@ -78,6 +123,10 @@ class ArchiveScanner:
         
         if not root.is_dir():
             return {'error': f"Path is not a directory: {root_path}"}
+
+        # Security check: Prevent scanning unsafe paths
+        if self.is_unsafe_path(root):
+            return {'error': f"Security risk: Scanning '{root}' is not allowed."}
         
         print(f"Scanning directory: {root}")
         self.scanned_files = []
