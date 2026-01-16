@@ -25,6 +25,50 @@ from cognitive_tribunal.outputs.triage_report import TriageReportGenerator
 
 def main():
     """Main entry point for the CLI."""
+    # Check for empty state (no arguments)
+    if len(sys.argv) == 1:
+        try:
+            from rich.console import Console
+            from rich.panel import Panel
+            from rich.markdown import Markdown
+            from rich.theme import Theme
+
+            custom_theme = Theme({
+                "info": "dim cyan",
+                "warning": "magenta",
+                "danger": "bold red"
+            })
+            console = Console(theme=custom_theme)
+
+            welcome_md = """
+# Cognitive Archaeology Tribunal
+
+A comprehensive tool for auditing digital archives, repositories, and AI conversations.
+
+## Available Modules
+* **Archive Scanner**: Analyze file systems for duplicates and types
+* **AI Context**: Process ChatGPT exports and conversations
+* **Repo Analyzer**: Audit Personal and Organization GitHub repos
+* **Web Bookmarks**: Analyze bookmark exports
+
+## Quick Start
+```bash
+# Scan archives
+python main.py --scan-archives /path/to/files
+
+# Analyze personal repos
+python main.py --personal-repos username
+
+# Run everything
+python main.py --all --output-dir ./audit-results
+```
+"""
+            console.print(Panel(Markdown(welcome_md), title="Welcome", border_style="blue"))
+            sys.exit(0)
+        except ImportError:
+            # Fallback for when rich is not available
+            pass
+
     parser = argparse.ArgumentParser(
         description='Cognitive Archaeology Tribunal - Comprehensive digital archaeology tool',
         formatter_class=argparse.RawDescriptionHelpFormatter,
