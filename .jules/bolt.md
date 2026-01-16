@@ -1,0 +1,3 @@
+## 2024-05-23 - Hashing Performance & Compatibility
+**Learning:** `hashlib.file_digest` (Python 3.11+) is ~10-15% faster than a manual loop with 8KB chunks for file hashing, likely due to GIL release and C-level optimization. However, simpler buffer size increases (8KB -> 64KB) also yield comparable performance improvements on modern systems.
+**Action:** When optimizing I/O bound operations in Python, first check for modern stdlib implementations (`file_digest`). If back-compat is needed, increasing buffer sizes to 64KB is a safe, high-impact default optimization. Always measure; noise in virtualized environments can mask small gains.
