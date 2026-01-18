@@ -3,7 +3,9 @@ Tests for Archive Scanner module.
 """
 
 import tempfile
+import os
 from pathlib import Path
+from unittest.mock import patch, MagicMock
 
 from cognitive_tribunal.modules.archive_scanner import ArchiveScanner
 
@@ -18,7 +20,7 @@ def create_test_file(directory: Path, filename: str, content: str):
 def test_deduplicator_reset_between_locations():
     """
     Test that the deduplicator is reset between different location scans.
-    
+
     This test verifies that when scanning multiple locations with the same
     ArchiveScanner instance, the deduplicator statistics for each location
     are independent and don't include data from previous locations.
@@ -28,34 +30,34 @@ def test_deduplicator_reset_between_locations():
         with tempfile.TemporaryDirectory() as temp_dir2:
             dir1 = Path(temp_dir1)
             dir2 = Path(temp_dir2)
-            
+
             # Create identical files in both directories
             content = "This is test content for duplicate detection"
             create_test_file(dir1, "file1.txt", content)
             create_test_file(dir2, "file1.txt", content)
-            
+
             # Scan locations one by one
             scanner = ArchiveScanner()
-            
+
             # Scan first location
             result1 = scanner.scan_directory(str(dir1))
             dedup_stats1 = result1['deduplication']['stats']
-            
+
             # Scan second location - should not include duplicates from first location
             result2 = scanner.scan_directory(str(dir2))
             dedup_stats2 = result2['deduplication']['stats']
-            
+
             # Each location should report only 1 file (no duplicates within location)
             assert dedup_stats1['total_files'] == 1, \
                 f"Expected 1 file in location 1, got {dedup_stats1['total_files']}"
             assert dedup_stats1['duplicate_files'] == 0, \
                 f"Expected 0 duplicates in location 1, got {dedup_stats1['duplicate_files']}"
-            
+
             assert dedup_stats2['total_files'] == 1, \
                 f"Expected 1 file in location 2, got {dedup_stats2['total_files']}"
             assert dedup_stats2['duplicate_files'] == 0, \
                 f"Expected 0 duplicates in location 2, got {dedup_stats2['duplicate_files']}"
-            
+
             # If deduplicator is not reset, location 2 would show 2 total_files
             # (1 from current location + 1 from previous location)
 
@@ -63,7 +65,7 @@ def test_deduplicator_reset_between_locations():
 def test_scan_multiple_locations_independent():
     """
     Test that scan_multiple_locations produces correct per-location stats.
-    
+
     This test verifies that each location's results are independent and
     don't get contaminated by files from other locations.
     """
@@ -71,29 +73,29 @@ def test_scan_multiple_locations_independent():
         with tempfile.TemporaryDirectory() as temp_dir2:
             dir1 = Path(temp_dir1)
             dir2 = Path(temp_dir2)
-            
+
             # Create different files in each directory
             create_test_file(dir1, "file1.txt", "Content for location 1")
             create_test_file(dir1, "file2.txt", "More content for location 1")
-            
+
             create_test_file(dir2, "file3.txt", "Content for location 2")
-            
+
             # Use scan_multiple_locations
             scanner = ArchiveScanner()
             results = scanner.scan_multiple_locations([str(dir1), str(dir2)])
-            
+
             # Check per-location results
             loc1_results = results['locations'][str(dir1)]
             loc2_results = results['locations'][str(dir2)]
-            
+
             # Location 1 should have 2 files
             assert loc1_results['stats']['total_files'] == 2, \
                 f"Expected 2 files in location 1, got {loc1_results['stats']['total_files']}"
-            
+
             # Location 2 should have 1 file (not 3 from accumulated state)
             assert loc2_results['stats']['total_files'] == 1, \
                 f"Expected 1 file in location 2, got {loc2_results['stats']['total_files']}"
-            
+
             # Deduplication stats for location 2 should only count its own file
             loc2_dedup = loc2_results['deduplication']['stats']
             assert loc2_dedup['total_files'] == 1, \
@@ -106,21 +108,109 @@ def test_duplicate_detection_within_single_location():
     """
     with tempfile.TemporaryDirectory() as temp_dir:
         directory = Path(temp_dir)
-        
+
         # Create duplicate files within the same location
         content = "Duplicate content"
         create_test_file(directory, "dup1.txt", content)
         create_test_file(directory, "dup2.txt", content)
         create_test_file(directory, "unique.txt", "Unique content")
-        
+
         scanner = ArchiveScanner()
         result = scanner.scan_directory(str(directory))
-        
+
         # Should have 3 total files
         assert result['stats']['total_files'] == 3
-        
+
         # Should detect 1 duplicate group with 2 files
         dedup_stats = result['deduplication']['stats']
         assert dedup_stats['total_files'] == 3
         assert dedup_stats['duplicate_groups'] == 1
         assert dedup_stats['duplicate_files'] == 1  # 2 files - 1 = 1 duplicate
+
+
+def test_unsafe_path_detection_posix():
+    """Test unsafe path detection on POSIX systems."""
+    scanner = ArchiveScanner()
+
+    with patch('os.name', 'posix'):
+        # Mock Path.resolve to return specific paths
+        with patch('pathlib.Path.resolve') as mock_resolve:
+            # Test root
+            mock_path = MagicMock()
+            mock_path.anchor = '/'
+            mock_path.__str__.return_value = '/'
+            mock_resolve.return_value = mock_path
+            assert scanner.is_unsafe_path(Path('/')) is True
+
+            # Test /etc (exact match)
+            mock_path = MagicMock()
+            mock_path.anchor = '/'
+            mock_path.__str__.return_value = '/etc'
+            mock_resolve.return_value = mock_path
+            assert scanner.is_unsafe_path(Path('/etc')) is True
+
+            # Test /etc/passwd (subdirectory)
+            mock_path = MagicMock()
+            mock_path.anchor = '/'
+            mock_path.__str__.return_value = '/etc/passwd'
+            mock_resolve.return_value = mock_path
+            assert scanner.is_unsafe_path(Path('/etc/passwd')) is True
+
+            # Test /home/user (safe)
+            mock_path = MagicMock()
+            mock_path.anchor = '/'
+            mock_path.__str__.return_value = '/home/user'
+            mock_resolve.return_value = mock_path
+            assert scanner.is_unsafe_path(Path('/home/user')) is False
+
+
+def test_unsafe_path_detection_windows():
+    """Test unsafe path detection on Windows systems."""
+    scanner = ArchiveScanner()
+
+    with patch('os.name', 'nt'), patch('os.sep', '\\'):
+        with patch.dict(os.environ, {'SystemRoot': 'C:\\Windows', 'ProgramFiles': 'C:\\Program Files'}):
+            with patch('pathlib.Path.resolve') as mock_resolve:
+                # Test root C:\
+                mock_path = MagicMock()
+                mock_path.anchor = 'C:\\'
+                mock_path.__str__.return_value = 'C:\\'
+                mock_resolve.return_value = mock_path
+                # We need to ensure comparisons work with the mock
+                mock_resolve.side_effect = lambda *args, **kwargs: mock_path
+
+                assert scanner.is_unsafe_path(Path('C:\\')) is True
+
+                # Test C:\Windows (exact match)
+                mock_path = MagicMock()
+                mock_path.anchor = 'C:\\'
+                mock_path.__str__.return_value = 'C:\\Windows'
+                mock_resolve.return_value = mock_path
+                assert scanner.is_unsafe_path(Path('C:\\Windows')) is True
+
+                # Test C:\Windows\System32 (subdirectory)
+                mock_path = MagicMock()
+                mock_path.anchor = 'C:\\'
+                mock_path.__str__.return_value = 'C:\\Windows\\System32'
+                mock_resolve.return_value = mock_path
+                assert scanner.is_unsafe_path(
+                    Path('C:\\Windows\\System32')) is True
+
+                # Test C:\Users\User (safe)
+                mock_path = MagicMock()
+                mock_path.anchor = 'C:\\'
+                mock_path.__str__.return_value = 'C:\\Users\\User'
+                mock_resolve.return_value = mock_path
+                assert scanner.is_unsafe_path(Path('C:\\Users\\User')) is False
+
+
+def test_scan_directory_blocks_unsafe_path():
+    """Test that scan_directory returns error for unsafe paths."""
+    scanner = ArchiveScanner()
+
+    # We can use the actual root path since we know it's unsafe
+    # But to be safe and cross-platform compatible, we mock is_unsafe_path
+    with patch.object(scanner, 'is_unsafe_path', return_value=True):
+        result = scanner.scan_directory("/some/unsafe/path")
+        assert 'error' in result
+        assert "Unsafe path detected" in result['error']
